@@ -1,0 +1,3 @@
+# Docker-generated folders — do not commit
+mysql/
+logs/
