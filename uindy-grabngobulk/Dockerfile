@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     php8.1-mbstring \
     php8.1-zip \
     php8.1-intl \
+    php8.1-sqlite3 \
     libapache2-mod-php8.1 \
     curl \
     unzip \
@@ -21,7 +22,8 @@ RUN apt-get update && apt-get install -y \
     && rm -f /etc/apache2/sites-enabled/000-default.conf
 
 RUN composer create-project simplesamlphp/simplesamlphp:^2.3 \
-    /var/simplesamlphp --no-interaction --prefer-dist
+    /var/simplesamlphp --no-interaction --prefer-dist \
+    --ignore-platform-reqs
 
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
