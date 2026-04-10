@@ -15,7 +15,11 @@ $config = [
     'admin.protectindexpage' => true,
     'admin.protectmetadata' => false,
 
-    'debug' => true,
+    'debug' => [
+    'saml' => false,
+    'backtraces' => true,
+    'validatexml' => false,
+],
     'showerrors' => true,
 
     'session.duration' => 28800,
