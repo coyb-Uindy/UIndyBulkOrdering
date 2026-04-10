@@ -2,9 +2,13 @@
 // db.php — database connection
 // Adjust host/dbname/username/password to match your Docker environment.
 
-$dsn      = 'mysql:host=localhost;dbname=GrabNGo;charset=utf8mb4';
-$db_user  = 'admin';
-$db_pass  = 'L0mpPSJ4l5j9';          // set your MySQL password here
+//$dsn      = 'mysql:host=localhost;dbname=GrabNGo;charset=utf8mb4';
+//$db_user  = 'admin';
+//$db_pass  = 'L0mpPSJ4l5j9';          // set your MySQL password here
+
+$dsn      = 'mysql:host=mysql.railway.internal;dbname=railway;charset=utf8mb4;port=3306';
+$db_user  = 'root';
+$db_pass  = 'PTozBFuRlDGnNtGcUqFpBkuVEnYuvCdn';
 
 try {
     $pdo = new PDO($dsn, $db_user, $db_pass, [

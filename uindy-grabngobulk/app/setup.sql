@@ -3,9 +3,9 @@
 -- Run once: mysql -u root -p < setup.sql
 -- ============================================================
 
-DROP DATABASE IF EXISTS GrabNGo;
-CREATE DATABASE GrabNGo;
-USE GrabNGo;
+--DROP DATABASE IF EXISTS GrabNGo;
+--CREATE DATABASE GrabNGo;
+--USE GrabNGo;
 
 -- -------------------------------------------------------
 -- Users authenticated via SAML / Entra ID
