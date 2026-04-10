@@ -29,8 +29,8 @@ RUN curl -L https://github.com/simplesamlphp/simplesamlphp/releases/download/v2.
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
 
-RUN chown -R www-data:www-data /var/www/html \
-    && chown -R www-data:www-data /var/simplesamlphp
+RUN apt-get install -y composer \
+    && composer create-project simplesamlphp/simplesamlphp /var/simplesamlphp --no-interaction --prefer-dist
 
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 
