@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y \
     && a2enmod php8.1 rewrite \
     && apt-get clean
 
+RUN rm -f /var/www/html/index.html
+
 COPY app/ /var/www/html/
 
-RUN chown -R www-data:www-data /var/www/html \
-    && rm -f /var/www/html/index.html
+RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
 
