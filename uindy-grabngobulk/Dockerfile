@@ -25,11 +25,17 @@ RUN composer create-project simplesamlphp/simplesamlphp:^2.3 \
     /var/simplesamlphp --no-interaction --prefer-dist \
     --ignore-platform-reqs
 
+RUN mkdir -p /var/simplesamlphp/log \
+    && mkdir -p /var/simplesamlphp/data \
+    && mkdir -p /var/simplesamlphp/cert \
+    && mkdir -p /tmp/simplesaml
+
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
 
 RUN chown -R www-data:www-data /var/www/html \
-    && chown -R www-data:www-data /var/simplesamlphp
+    && chown -R www-data:www-data /var/simplesamlphp \
+    && chown -R www-data:www-data /tmp/simplesaml
 
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 
