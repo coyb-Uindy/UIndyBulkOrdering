@@ -6,15 +6,33 @@ RUN apt-get update && apt-get install -y \
     apache2 \
     php8.1 \
     php8.1-mysql \
+    php8.1-xml \
+    php8.1-curl \
+    php8.1-mbstring \
+    php8.1-zip \
+    php8.1-intl \
     libapache2-mod-php8.1 \
+    curl \
+    unzip \
     && a2enmod php8.1 rewrite \
     && apt-get clean \
     && rm -rf /var/www/html/* \
     && rm -f /etc/apache2/sites-enabled/000-default.conf
 
-COPY app/ /var/www/html/
+# Install SimpleSAMLphp
+RUN curl -L https://github.com/simplesamlphp/simplesamlphp/releases/download/v2.3.4/simplesamlphp-2.3.4.tar.gz \
+    -o /var/simplesamlphp.tar.gz \
+    && tar -xzf /var/simplesamlphp.tar.gz -C /var/ \
+    && mv /var/simplesamlphp-2.3.4 /var/simplesamlphp \
+    && rm /var/simplesamlphp.tar.gz
 
-RUN chown -R www-data:www-data /var/www/html
+COPY app/ /var/www/html/
+COPY simplesaml-config/ /var/simplesamlphp/config/
+
+RUN chown -R www-data:www-data /var/www/html \
+    && chown -R www-data:www-data /var/simplesamlphp
+
+COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 
 EXPOSE 80
 
