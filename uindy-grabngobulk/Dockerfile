@@ -1,5 +1,9 @@
-FROM mattrayner/lamp:0.8.0-1804-php8
+FROM php:8.2-apache
 
-COPY app/ /app/
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+
+COPY uindy-grabngobulk/app/ /var/www/html/
+
+RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
