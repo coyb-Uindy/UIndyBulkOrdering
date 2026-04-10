@@ -16,11 +16,18 @@ $config = [
     'admin.protectmetadata' => false,
 
     'debug' => [
-    'saml' => false,
-    'backtraces' => true,
-    'validatexml' => false,
-],
+        'saml' => false,
+        'backtraces' => true,
+        'validatexml' => false,
+    ],
+
     'showerrors' => true,
+
+    'logging.level' => 3,
+    'logging.handler' => 'file',
+    'logging.facility' => LOG_USER,
+    'logging.processname' => 'simplesamlphp',
+    'logging.logfile' => 'simplesamlphp.log',
 
     'session.duration' => 28800,
     'session.datastore.timeout' => 14400,
@@ -36,4 +43,6 @@ $config = [
     'store.type' => 'phpsession',
 
     'language.default' => 'en',
+
+    'timezone' => 'America/Indiana/Indianapolis',
 ];
