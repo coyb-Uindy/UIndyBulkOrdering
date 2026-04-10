@@ -3,8 +3,8 @@
 // Adjust host/dbname/username/password to match your Docker environment.
 
 $dsn      = 'mysql:host=localhost;dbname=GrabNGo;charset=utf8mb4';
-$db_user  = 'root';
-$db_pass  = '';          // set your MySQL password here
+$db_user  = 'admin';
+$db_pass  = 'L0mpPSJ4l5j9';          // set your MySQL password here
 
 try {
     $pdo = new PDO($dsn, $db_user, $db_pass, [

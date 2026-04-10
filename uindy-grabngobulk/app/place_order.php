@@ -11,6 +11,9 @@ if (!isset($_SESSION['user_email'])) {
 }
 
 require_once 'db.php';
+// TEMPORARY 
+$pdo->exec("INSERT IGNORE INTO users (email, first_name, last_name) 
+            VALUES ('test@uindy.edu', 'Test', 'Student')");
 
 // Validate inputs
 $item_id   = filter_input(INPUT_POST, 'item_id',   FILTER_VALIDATE_INT);

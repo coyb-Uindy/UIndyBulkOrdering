@@ -1,0 +1,11 @@
+[Tue Apr 07 03:15:07.613289 2026] [php:error] [pid 820] [client 172.17.0.1:55784] script '/var/www/html/menu.php' not found or unable to stat, referer: https://organic-spoon-g4vp67q6p454hw5jv.github.dev/
+[Tue Apr 07 03:15:07.618152 2026] [mpm_prefork:notice] [pid 445] AH00163: Apache/2.4.29 (Ubuntu) configured -- resuming normal operations
+[Tue Apr 07 03:15:07.618210 2026] [core:notice] [pid 445] AH00094: Command line: 'apache2 -D FOREGROUND'
+[Tue Apr 07 03:15:10.517402 2026] [php:error] [pid 822] [client 172.17.0.1:32936] script '/var/www/html/menu.php' not found or unable to stat, referer: https://organic-spoon-g4vp67q6p454hw5jv.github.dev/
+[Tue Apr 07 03:16:23.202691 2026] [mpm_prefork:notice] [pid 445] AH00169: caught SIGTERM, shutting down
+[Tue Apr 07 03:16:58.616698 2026] [mpm_prefork:notice] [pid 28] AH00163: Apache/2.4.29 (Ubuntu) configured -- resuming normal operations
+[Tue Apr 07 03:16:58.616773 2026] [core:notice] [pid 28] AH00094: Command line: 'apache2 -D FOREGROUND'
+[Tue Apr 07 03:20:01.524610 2026] [mpm_prefork:notice] [pid 28] AH00169: caught SIGTERM, shutting down
+[Tue Apr 07 11:35:02.795690 2026] [mpm_prefork:notice] [pid 28] AH00163: Apache/2.4.29 (Ubuntu) configured -- resuming normal operations
+[Tue Apr 07 11:35:02.823458 2026] [core:notice] [pid 28] AH00094: Command line: 'apache2 -D FOREGROUND'
+[Tue Apr 07 11:37:25.443307 2026] [mpm_prefork:notice] [pid 28] AH00169: caught SIGTERM, shutting down

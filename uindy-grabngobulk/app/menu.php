@@ -3,6 +3,11 @@
 
 session_start();
 
+// TEMPORARY — remove before final submission
+$_SESSION['user_email']      = 'test@uindy.edu';
+$_SESSION['user_first_name'] = 'Test';
+$_SESSION['user_last_name']  = 'Student';
+
 // Guard: must be logged in via SAML
 if (!isset($_SESSION['user_email'])) {
     header('Location: index.php');
