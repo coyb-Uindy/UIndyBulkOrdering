@@ -8,9 +8,9 @@ RUN apt-get update && apt-get install -y \
     php8.1-mysql \
     libapache2-mod-php8.1 \
     && a2enmod php8.1 rewrite \
-    && apt-get clean
-
-RUN rm -f /var/www/html/index.html
+    && apt-get clean \
+    && rm -rf /var/www/html/* \
+    && rm -f /etc/apache2/sites-enabled/000-default.conf
 
 COPY app/ /var/www/html/
 
