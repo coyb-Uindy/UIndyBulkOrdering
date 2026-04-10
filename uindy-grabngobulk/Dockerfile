@@ -14,23 +14,20 @@ RUN apt-get update && apt-get install -y \
     libapache2-mod-php8.1 \
     curl \
     unzip \
+    composer \
     && a2enmod php8.1 rewrite \
     && apt-get clean \
     && rm -rf /var/www/html/* \
     && rm -f /etc/apache2/sites-enabled/000-default.conf
 
-# Install SimpleSAMLphp
-RUN curl -L https://github.com/simplesamlphp/simplesamlphp/releases/download/v2.3.4/simplesamlphp-2.3.4.tar.gz \
-    -o /var/simplesamlphp.tar.gz \
-    && tar -xzf /var/simplesamlphp.tar.gz -C /var/ \
-    && mv /var/simplesamlphp-2.3.4 /var/simplesamlphp \
-    && rm /var/simplesamlphp.tar.gz
+RUN composer create-project simplesamlphp/simplesamlphp:^2.3 \
+    /var/simplesamlphp --no-interaction --prefer-dist
 
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
 
-RUN apt-get install -y composer \
-    && composer create-project simplesamlphp/simplesamlphp /var/simplesamlphp --no-interaction --prefer-dist
+RUN chown -R www-data:www-data /var/www/html \
+    && chown -R www-data:www-data /var/simplesamlphp
 
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 
