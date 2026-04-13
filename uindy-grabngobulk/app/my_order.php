@@ -1,5 +1,5 @@
 <?php
-// my_order.php — live order status page (polls order_status.php every 30 s)
+// my_order.php — shows all of the current user's orders with live status polling
 session_start();
 
 // TEMPORARY — remove before final submission
@@ -18,8 +18,34 @@ $allowed   = ['en', 'fr'];
 if (!in_array($lang_code, $allowed, true)) $lang_code = 'en';
 $t = require __DIR__ . "/lang/{$lang_code}.php";
 
+require_once 'db.php';
+
 $first_name = htmlspecialchars($_SESSION['user_first_name'] ?? 'Student');
-$order_id   = filter_input(INPUT_GET, 'order_id', FILTER_VALIDATE_INT) ?: 0;
+$email      = $_SESSION['user_email'];
+
+// Load all orders for this user, newest first
+$stmt = $pdo->prepare(
+    'SELECT id, item_name, category, case_cost, pack_qty, status, ordered_at
+     FROM orders
+     WHERE user_email = ?
+     ORDER BY ordered_at DESC
+     LIMIT 30'
+);
+$stmt->execute([$email]);
+$orders = $stmt->fetchAll();
+
+// Helper: convert UTC datetime from MySQL to Indianapolis display time
+function indy_time(string $utc_dt): string {
+    $d = new DateTime($utc_dt, new DateTimeZone('UTC'));
+    $d->setTimezone(new DateTimeZone('America/Indiana/Indianapolis'));
+    return $d->format('g:i A');
+}
+
+// Collect IDs of still-pending orders for the JS poller
+$pending_ids = array_map(
+    fn($o) => (int) $o['id'],
+    array_filter($orders, fn($o) => $o['status'] === 'pending')
+);
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang_code ?>">
@@ -34,7 +60,7 @@ $order_id   = filter_input(INPUT_GET, 'order_id', FILTER_VALIDATE_INT) ?: 0;
 <nav class="topnav" role="navigation" aria-label="Main navigation">
   <div class="topnav__brand">
     <div class="topnav__logo">GNG</div>
-    <div>
+    <div class="topnav__brand-text">
       <div class="topnav__title"><?= htmlspecialchars($t['nav_title']) ?></div>
       <div class="topnav__subtitle"><?= htmlspecialchars($t['nav_subtitle']) ?></div>
     </div>
@@ -48,144 +74,164 @@ $order_id   = filter_input(INPUT_GET, 'order_id', FILTER_VALIDATE_INT) ?: 0;
 
 <main class="page" id="main-content">
 
-  <!-- Loading state -->
-  <div class="status-page" id="loadingState">
-    <div class="status-spinner" aria-label="Loading" role="status"></div>
-    <p style="color:var(--muted);margin-top:1rem;"><?= htmlspecialchars($t['checking_status']) ?></p>
-  </div>
-
-  <!-- No-order state -->
-  <div class="status-page hidden" id="noOrderState">
+  <?php if (empty($orders)): ?>
+  <!-- No orders at all -->
+  <div class="status-page">
     <div class="status-icon status-icon--neutral" aria-hidden="true">📭</div>
-    <h1><?= htmlspecialchars($t['status_no_order']) ?></h1>
-    <p><?= htmlspecialchars($t['status_no_order_desc']) ?></p>
+    <h1><?= htmlspecialchars($t['no_orders_title']) ?></h1>
+    <p><?= htmlspecialchars($t['no_orders_desc']) ?></p>
     <a href="menu.php" class="btn-back"><?= htmlspecialchars($t['back_to_menu']) ?></a>
   </div>
 
-  <!-- Live order card -->
-  <div class="status-page hidden" id="orderState">
-    <div class="status-icon" id="statusIcon" aria-hidden="true">⏳</div>
-    <span class="status-badge status-badge--pending" id="statusBadge"></span>
-    <h1 id="statusTitle"></h1>
-    <p id="statusDesc"></p>
+  <?php else: ?>
 
-    <div class="status-order-card">
-      <div class="status-order-label"><?= htmlspecialchars($t['status_order_for']) ?> <strong><?= $first_name ?></strong></div>
-      <div class="status-order-item" id="cardItemName">—</div>
-      <div class="status-order-meta">
-        <span id="cardCategory">—</span>&nbsp;·&nbsp;<span id="cardPack">—</span>&nbsp;·&nbsp;<strong id="cardCost">—</strong>
-      </div>
-      <div class="status-order-time" id="cardTime">—</div>
+  <div class="orders-page-header">
+    <h1><?= htmlspecialchars($t['orders_heading']) ?></h1>
+    <div class="orders-actions">
+      <button class="btn-refresh-now" onclick="location.reload()" id="refreshBtn">
+        <?= htmlspecialchars($t['refresh_now']) ?>
+      </button>
+      <a href="menu.php" class="btn-back-inline"><?= htmlspecialchars($t['back_to_menu']) ?></a>
     </div>
-
-    <p class="status-auto-note" id="autoNote"><?= htmlspecialchars($t['auto_refresh_note']) ?></p>
-    <button class="btn-refresh-now" onclick="poll()" id="refreshBtn">🔄 Refresh Now</button>
-    <a href="menu.php" class="btn-back"><?= htmlspecialchars($t['back_to_menu']) ?></a>
   </div>
+
+  <?php if (!empty($pending_ids)): ?>
+  <p class="status-auto-note" style="margin-bottom:1rem;">
+    <?= htmlspecialchars($t['auto_refresh_note']) ?>
+  </p>
+  <?php endif; ?>
+
+  <div class="orders-list">
+  <?php foreach ($orders as $order): ?>
+    <?php
+      $status  = $order['status'];
+      $is_pend = $status === 'pending';
+    ?>
+    <div class="order-card order-card--<?= $status ?>"
+         id="order-<?= $order['id'] ?>"
+         data-order-id="<?= $order['id'] ?>"
+         data-status="<?= $status ?>">
+
+      <!-- Status strip -->
+      <div class="order-card__header">
+        <span class="status-badge status-badge--<?= $status === 'completed' ? 'complete' : ($status === 'denied' ? 'denied' : 'pending') ?>"
+              id="badge-<?= $order['id'] ?>">
+          <?php
+            if ($status === 'completed')    echo htmlspecialchars($t['status_complete_badge']);
+            elseif ($status === 'denied')   echo htmlspecialchars($t['status_denied_badge']);
+            else                            echo htmlspecialchars($t['status_pending_badge']);
+          ?>
+        </span>
+        <?php if ($is_pend): ?>
+          <span class="my-order-dot" style="margin-left:.5rem;" aria-label="Pending"></span>
+        <?php endif; ?>
+      </div>
+
+      <!-- Item info -->
+      <div class="order-card__body">
+        <div class="order-card__item" id="title-<?= $order['id'] ?>">
+          <?php
+            if ($status === 'completed')    echo htmlspecialchars($t['status_complete_title']);
+            elseif ($status === 'denied')   echo htmlspecialchars($t['status_denied_title']);
+            else                            echo htmlspecialchars($t['status_pending_title']);
+          ?>
+        </div>
+        <div class="order-card__name"><?= htmlspecialchars($order['item_name']) ?></div>
+        <div class="order-card__meta">
+          <?= htmlspecialchars($order['category']) ?> &nbsp;·&nbsp;
+          <?= htmlspecialchars($t['pack_of']) ?> <?= (int)$order['pack_qty'] ?> &nbsp;·&nbsp;
+          <strong>$<?= number_format((float)$order['case_cost'], 2) ?></strong>
+        </div>
+        <?php if ($status === 'completed'): ?>
+          <p class="order-card__msg order-card__msg--complete"><?= htmlspecialchars($t['status_complete_msg']) ?></p>
+        <?php elseif ($status === 'denied'): ?>
+          <p class="order-card__msg order-card__msg--denied"><?= htmlspecialchars($t['status_denied_msg']) ?></p>
+        <?php endif; ?>
+      </div>
+
+      <!-- Time -->
+      <div class="order-card__time">
+        🕐 <?= htmlspecialchars(indy_time($order['ordered_at'])) ?>
+      </div>
+
+    </div>
+  <?php endforeach; ?>
+  </div>
+
+  <?php endif; ?>
 
 </main>
 
 <script>
+const PENDING_IDS = <?= json_encode(array_values($pending_ids)) ?>;
 const T = {
-  pending_title:  <?= json_encode($t['status_pending_title'])  ?>,
-  pending_desc:   <?= json_encode($t['status_pending_desc'])   ?>,
-  pending_badge:  <?= json_encode($t['status_pending_badge'])  ?>,
-  complete_title: <?= json_encode($t['status_complete_title']) ?>,
-  complete_desc:  <?= json_encode($t['status_complete_desc'])  ?>,
   complete_badge: <?= json_encode($t['status_complete_badge']) ?>,
-  denied_title:   <?= json_encode($t['status_denied_title'])   ?>,
-  denied_desc:    <?= json_encode($t['status_denied_desc'])    ?>,
+  complete_title: <?= json_encode($t['status_complete_title']) ?>,
+  complete_msg:   <?= json_encode($t['status_complete_msg'])   ?>,
   denied_badge:   <?= json_encode($t['status_denied_badge'])   ?>,
-  auto_note:      <?= json_encode($t['auto_refresh_note'])     ?>,
+  denied_title:   <?= json_encode($t['status_denied_title'])   ?>,
+  denied_msg:     <?= json_encode($t['status_denied_msg'])     ?>,
 };
 
-const ORDER_ID = <?= (int) $order_id ?>;
-let pollTimer  = null;
-let lastStatus = null;
+async function pollOrder(id) {
+  try {
+    const res  = await fetch('order_status.php?order_id=' + id);
+    const data = await res.json();
+    if (!data.found || data.status === 'pending') return; // still waiting
 
-function statusUrl() {
-  return 'order_status.php' + (ORDER_ID ? '?order_id=' + ORDER_ID : '');
+    // Terminal state — update the card
+    const card  = document.getElementById('order-' + id);
+    const badge = document.getElementById('badge-' + id);
+    const title = document.getElementById('title-' + id);
+    if (!card) return;
+
+    // Remove pending dot
+    const dot = card.querySelector('.my-order-dot');
+    if (dot) dot.remove();
+
+    if (data.status === 'completed') {
+      card.classList.replace('order-card--pending', 'order-card--completed');
+      badge.textContent = T.complete_badge;
+      badge.className   = 'status-badge status-badge--complete';
+      title.textContent = T.complete_title;
+      // Add message if not already there
+      if (!card.querySelector('.order-card__msg')) {
+        const msg = document.createElement('p');
+        msg.className   = 'order-card__msg order-card__msg--complete';
+        msg.textContent = T.complete_msg;
+        card.querySelector('.order-card__body').appendChild(msg);
+      }
+    } else if (data.status === 'denied') {
+      card.classList.replace('order-card--pending', 'order-card--denied');
+      badge.textContent = T.denied_badge;
+      badge.className   = 'status-badge status-badge--denied';
+      title.textContent = T.denied_title;
+      if (!card.querySelector('.order-card__msg')) {
+        const msg = document.createElement('p');
+        msg.className   = 'order-card__msg order-card__msg--denied';
+        msg.textContent = T.denied_msg;
+        card.querySelector('.order-card__body').appendChild(msg);
+      }
+    }
+
+    card.dataset.status = data.status;
+  } catch (err) {
+    console.error('Poll failed for order', id, err);
+  }
 }
 
-function show(id) {
-  ['loadingState','noOrderState','orderState'].forEach(s => {
-    document.getElementById(s).classList.toggle('hidden', s !== id);
+function pollAll() {
+  // Only poll cards still showing as pending in the DOM
+  document.querySelectorAll('.order-card--pending').forEach(card => {
+    pollOrder(parseInt(card.dataset.orderId));
   });
 }
 
-function formatTime(dtStr) {
-  const d = new Date(dtStr.replace(' ', 'T'));
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+if (PENDING_IDS.length > 0) {
+  // Initial poll after 5 s, then every 30 s
+  setTimeout(pollAll, 5000);
+  setInterval(pollAll, 30000);
 }
-
-function applyStatus(status) {
-  const icon  = document.getElementById('statusIcon');
-  const badge = document.getElementById('statusBadge');
-  const title = document.getElementById('statusTitle');
-  const desc  = document.getElementById('statusDesc');
-  const note  = document.getElementById('autoNote');
-
-  icon.className = 'status-icon';
-
-  if (status === 'completed') {
-    icon.textContent  = '✅';
-    icon.classList.add('status-icon--complete');
-    badge.textContent = T.complete_badge;
-    badge.className   = 'status-badge status-badge--complete';
-    title.textContent = T.complete_title;
-    desc.textContent  = T.complete_desc;
-    note.classList.add('hidden');
-    clearInterval(pollTimer);
-  } else if (status === 'denied') {
-    icon.textContent  = '❌';
-    icon.classList.add('status-icon--denied');
-    badge.textContent = T.denied_badge;
-    badge.className   = 'status-badge status-badge--denied';
-    title.textContent = T.denied_title;
-    desc.textContent  = T.denied_desc;
-    note.classList.add('hidden');
-    clearInterval(pollTimer);
-  } else {
-    icon.textContent  = '⏳';
-    badge.textContent = T.pending_badge;
-    badge.className   = 'status-badge status-badge--pending';
-    title.textContent = T.pending_title;
-    desc.textContent  = T.pending_desc;
-    note.textContent  = T.auto_note;
-    note.classList.remove('hidden');
-  }
-}
-
-async function poll() {
-  try {
-    const res  = await fetch(statusUrl());
-    const data = await res.json();
-
-    if (!data.found) {
-      show('noOrderState');
-      clearInterval(pollTimer);
-      return;
-    }
-
-    document.getElementById('cardItemName').textContent = data.item_name;
-    document.getElementById('cardCategory').textContent = data.category;
-    document.getElementById('cardPack').textContent     = 'Pack of ' + data.pack_qty;
-    document.getElementById('cardCost').textContent     = '$' + data.case_cost;
-    document.getElementById('cardTime').textContent     = '🕐 Ordered at ' + formatTime(data.ordered_at);
-
-    show('orderState');
-
-    if (data.status !== lastStatus) {
-      lastStatus = data.status;
-      applyStatus(data.status);
-    }
-  } catch (err) {
-    console.error('Status poll failed:', err);
-  }
-}
-
-poll();
-pollTimer = setInterval(poll, 30000);
 </script>
 
 </body>

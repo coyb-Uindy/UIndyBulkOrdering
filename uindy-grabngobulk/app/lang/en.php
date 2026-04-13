@@ -32,25 +32,42 @@ return [
     'placing_order'     => 'Placing order…',
 
     // ── Order Status Page ───────────────────────────────────
-    'status_page_title'     => 'Order Status — UIndy Grab-N-Go',
+    'status_page_title'     => 'My Orders — UIndy Grab-N-Go',
     'status_order_for'      => 'Order for',
+    'no_orders_title'       => 'No Orders Yet',
+    'no_orders_desc'        => "You haven't placed any orders. Head back to the menu to get started!",
+    'orders_heading'        => 'Your Orders',
+    'pack_of'               => 'Pack of',
 
-    'status_pending_title'  => 'Your Order is Being Prepared!',
-    'status_pending_desc'   => 'Hang tight — Grab-N-Go staff have received your order and are working on it. This page will update automatically when your order is ready.',
-    'status_pending_badge'  => '⏳ Awaiting Staff Confirmation',
-
-    'status_complete_title' => 'Your Order is Ready! 🎉',
-    'status_complete_desc'  => 'Head to the Grab-N-Go — your order is packed and waiting for you. No need to wait in line!',
-    'status_complete_badge' => '✅ Order Complete',
-
+    'status_pending_title'  => 'Being Prepared',
+    'status_pending_badge'  => '⏳ Awaiting Staff',
+    'status_complete_title' => 'Ready for Pickup! 🎉',
+    'status_complete_badge' => '✅ Complete',
+    'status_complete_msg'   => 'Head to the Grab-N-Go — your order is packed and waiting. No line!',
     'status_denied_title'   => 'Order Unavailable',
-    'status_denied_desc'    => 'Unfortunately, your order was denied — the item may be out of stock or unavailable at this time. Please return to the menu and choose a different item.',
-    'status_denied_badge'   => '❌ Order Denied',
-
-    'status_no_order'       => 'No Current Order',
-    'status_no_order_desc'  => "You don't have an active order. Head back to the menu to place one!",
+    'status_denied_badge'   => '❌ Denied',
+    'status_denied_msg'     => 'Your order was unfortunately denied — the item may be out of stock. Please return to the menu to choose another item.',
 
     'back_to_menu'          => '← Back to Menu',
-    'checking_status'       => 'Checking order status…',
-    'auto_refresh_note'     => 'This page checks for updates every 30 seconds.',
+    'refresh_now'           => '🔄 Refresh',
+    'auto_refresh_note'     => 'Updates every 30 seconds.',
+
+    // ── Category names (from DB) ────────────────────────────
+    'cat_names' => [
+        'Sodas & Water'   => 'Sodas & Water',
+        'Tropicana Juice' => 'Tropicana Juice',
+        'Pure Leaf Tea'   => 'Pure Leaf Tea',
+        'Propel'          => 'Propel',
+        'Muscle Milk'     => 'Muscle Milk',
+        'Rockstar'        => 'Rockstar',
+        'Starbucks'       => 'Starbucks',
+        '16oz Celsius'    => '16oz Celsius',
+        '12oz Celsius'    => '12oz Celsius',
+        'Gatorade'        => 'Gatorade',
+        'Alani'           => 'Alani',
+    ],
+
+    // ── Item descriptor word map (applied word-by-word to item names) ──
+    // English: identity map — no translation needed
+    'item_word_map' => [],
 ];

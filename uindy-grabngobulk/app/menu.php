@@ -75,6 +75,12 @@ $cat_emojis = [
     '12oz Celsius'    => '❄️', 'Gatorade'        => '⚡',
     'Alani'           => '🌸',
 ];
+
+// Translate an item name word-by-word using the lang word map
+function translate_item(string $name, array $word_map): string {
+    if (empty($word_map)) return $name;
+    return implode(' ', array_map(fn($w) => $word_map[$w] ?? $w, explode(' ', $name)));
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang_code ?>">
@@ -166,6 +172,7 @@ $cat_emojis = [
       $emoji    = $cat_emojis[$cat['name']] ?? '🥤';
       $item_cnt = count($cat['items']);
       $label_key = $item_cnt !== 1 ? 'opt_plural' : 'opt_singular';
+      $display_cat = $t['cat_names'][$cat['name']] ?? $cat['name'];
     ?>
     <div class="category-card" id="cat-<?= $cat_id ?>">
 
@@ -185,7 +192,7 @@ $cat_emojis = [
         </div>
 
         <div>
-          <div class="category-name"><?= htmlspecialchars($cat['name']) ?></div>
+          <div class="category-name"><?= htmlspecialchars($display_cat) ?></div>
           <div class="category-count"><?= $item_cnt ?> <?= htmlspecialchars($t[$label_key]) ?></div>
         </div>
 
@@ -195,7 +202,8 @@ $cat_emojis = [
       <div class="category-body" id="body-<?= $cat_id ?>">
         <ul class="item-list" role="list">
           <?php foreach ($cat['items'] as $item): ?>
-          <?php $unavailable = !$item['is_available']; ?>
+          <?php $unavailable = !$item['is_available'];
+                $display_item = translate_item($item['name'], $t['item_word_map']); ?>
           <li class="item-row<?= $unavailable ? ' item-row--oos' : '' ?>" role="listitem">
 
             <div class="item-img" aria-hidden="true">
@@ -207,7 +215,7 @@ $cat_emojis = [
             </div>
 
             <div class="item-info">
-              <div class="item-name"><?= htmlspecialchars($item['name']) ?></div>
+              <div class="item-name"><?= htmlspecialchars($display_item) ?></div>
               <div class="item-meta">Pack of <?= $item['pack_qty'] ?></div>
               <?php if ($unavailable): ?>
                 <div class="oos-badge"><?= htmlspecialchars($t['out_of_stock']) ?></div>

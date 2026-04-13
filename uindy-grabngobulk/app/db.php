@@ -16,6 +16,8 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
+    // Always return TIMESTAMP columns as UTC so we can convert to local time explicitly
+    $pdo->exec("SET time_zone = '+00:00'");
 } catch (PDOException $e) {
     http_response_code(500);
     die(json_encode(['error' => 'Database connection failed.']));

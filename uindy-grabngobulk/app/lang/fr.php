@@ -2,7 +2,7 @@
 // lang/fr.php — French / Français strings
 return [
     // ── Navigation ──────────────────────────────────────────
-    'nav_title'         => 'Commande en Gros Grab-N-Go',
+    'nav_title'         => 'Commande en Vrac Grab-N-Go',
     'nav_subtitle'      => 'Université d\'Indianapolis',
     'language'          => '🌐 Langue',
     'admin_login'       => '🔐 Connexion Admin',
@@ -11,7 +11,7 @@ return [
 
     // ── Hero ────────────────────────────────────────────────
     'hero_title'        => 'Pré-commande de Boissons en Vrac',
-    'hero_desc'         => 'Sélectionnez une caisse ci-dessous et votre commande sera prête au Grab-N-Go avant votre arrivée — sans faire la queue ! Des remises approuvées par les services de restauration s\'appliquent aux commandes en vrac éligibles.',
+    'hero_desc'         => 'Sélectionnez une caisse ci-dessous et votre commande sera prête au Grab-N-Go avant votre arrivée — sans faire la queue ! Des rabais approuvés par la restauration s\'appliquent aux commandes éligibles.',
 
     // ── Menu ────────────────────────────────────────────────
     'section_label'     => 'Boissons Disponibles',
@@ -32,25 +32,97 @@ return [
     'placing_order'     => 'Commande en cours…',
 
     // ── Order Status Page ───────────────────────────────────
-    'status_page_title'     => 'Statut de Commande — UIndy Grab-N-Go',
+    'status_page_title'     => 'Mes Commandes — UIndy Grab-N-Go',
     'status_order_for'      => 'Commande pour',
+    'no_orders_title'       => 'Aucune Commande',
+    'no_orders_desc'        => 'Vous n\'avez pas encore passé de commande. Retournez au menu pour commencer !',
+    'orders_heading'        => 'Vos Commandes',
+    'pack_of'               => 'Paquet de',
 
-    'status_pending_title'  => 'Votre Commande est en Cours de Préparation !',
-    'status_pending_desc'   => 'Patientez — le personnel du Grab-N-Go a reçu votre commande et s\'en occupe. Cette page se mettra à jour automatiquement lorsque votre commande sera prête.',
-    'status_pending_badge'  => '⏳ En attente de confirmation',
-
-    'status_complete_title' => 'Votre Commande est Prête ! 🎉',
-    'status_complete_desc'  => 'Rendez-vous au Grab-N-Go — votre commande est prête et vous attend. Pas besoin de faire la queue !',
-    'status_complete_badge' => '✅ Commande Terminée',
-
+    'status_pending_title'  => 'En Cours de Préparation',
+    'status_pending_badge'  => '⏳ En attente',
+    'status_complete_title' => 'Prête à Récupérer ! 🎉',
+    'status_complete_badge' => '✅ Complète',
+    'status_complete_msg'   => 'Rendez-vous au Grab-N-Go — votre commande est prête. Pas besoin de faire la queue !',
     'status_denied_title'   => 'Commande Indisponible',
-    'status_denied_desc'    => 'Malheureusement, votre commande a été refusée — l\'article peut être en rupture de stock ou indisponible pour le moment. Veuillez retourner au menu et choisir un autre article.',
-    'status_denied_badge'   => '❌ Commande Déclinée',
-
-    'status_no_order'       => 'Aucune Commande en Cours',
-    'status_no_order_desc'  => 'Vous n\'avez pas de commande active. Retournez au menu pour en passer une !',
+    'status_denied_badge'   => '❌ Refusée',
+    'status_denied_msg'     => 'Votre commande a malheureusement été refusée — l\'article peut être en rupture de stock. Retournez au menu pour choisir un autre article.',
 
     'back_to_menu'          => '← Retour au Menu',
-    'checking_status'       => 'Vérification du statut…',
-    'auto_refresh_note'     => 'Cette page se met à jour toutes les 30 secondes.',
+    'refresh_now'           => '🔄 Actualiser',
+    'auto_refresh_note'     => 'Mise à jour toutes les 30 secondes.',
+
+    // ── Category names ──────────────────────────────────────
+    'cat_names' => [
+        'Sodas & Water'   => 'Sodas et Eau',
+        'Tropicana Juice' => 'Jus Tropicana',
+        'Pure Leaf Tea'   => 'Thé Pure Leaf',
+        'Propel'          => 'Propel',
+        'Muscle Milk'     => 'Muscle Milk',
+        'Rockstar'        => 'Rockstar',
+        'Starbucks'       => 'Starbucks',
+        '16oz Celsius'    => 'Celsius 16oz',
+        '12oz Celsius'    => 'Celsius 12oz',
+        'Gatorade'        => 'Gatorade',
+        'Alani'           => 'Alani',
+    ],
+
+    // ── Item descriptor word map ────────────────────────────
+    // Applied word-by-word to item names from the DB.
+    // Brand names (Aquafina, Pepsi, etc.) are not in this map and stay unchanged.
+    'item_word_map' => [
+        'Cherry'       => 'Cerise',
+        'Grape'        => 'Raisin',
+        'Strawberry'   => 'Fraise',
+        'Berry'        => 'Baie',
+        'Limeade'      => 'Limonade',
+        'Lemonade'     => 'Limonade',
+        'Peach'        => 'Pêche',
+        'Watermelon'   => 'Pastèque',
+        'Mango'        => 'Mangue',
+        'Apple'        => 'Pomme',
+        'Orange'       => 'Orange',
+        'Blueberry'    => 'Myrtille',
+        'Raspberry'    => 'Framboise',
+        'Cranberry'    => 'Canneberge',
+        'Black'        => 'Noir(e)',
+        'Unsweetened'  => 'Non sucré',
+        'Sweet'        => 'Sucré',
+        'Extra'        => 'Extra',
+        'Zero'         => 'Zéro',
+        'Energy'       => 'Énergie',
+        'Tropical'     => 'Tropical',
+        'Arctic'       => 'Arctique',
+        'Galaxy'       => 'Galaxie',
+        'Cosmic'       => 'Cosmique',
+        'Green'        => 'Vert',
+        'Blue'         => 'Bleu',
+        'Pink'         => 'Rose',
+        'Punch'        => 'Punch',
+        'Fruit'        => 'Fruits',
+        'Classic'      => 'Classique',
+        'Wild'         => 'Sauvage',
+        'Cotton'       => 'Barbe à',
+        'Candy'        => 'papa',
+        'Juicy'        => 'Juteux',
+        'Sherbet'      => 'Sorbet',
+        'Ice'          => 'Glacé',
+        'Chocolate'    => 'Chocolat',
+        'Vanilla'      => 'Vanille',
+        'Caramel'      => 'Caramel',
+        'Mocha'        => 'Moka',
+        'Freeze'       => 'Glacé',
+        'Cool'         => 'Frais',
+        'Diet'         => 'Diet',
+        'Ginger'       => 'Gingembre',
+        'Whipped'      => 'Fouetté',
+        'Peanut'       => 'Beurre de',
+        'Butter'       => 'cacahuète',
+        'Lemon'        => 'Citron',
+        'Tea'          => 'Thé',
+        'Juice'        => 'Jus',
+        'Water'        => 'Eau',
+        'Milk'         => 'Lait',
+        'Drink'        => 'Boisson',
+    ],
 ];

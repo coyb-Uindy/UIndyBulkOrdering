@@ -122,6 +122,7 @@ $oos_count   = count(array_filter($rows, fn($r) => !$r['is_available']));
   <?php foreach ($categories as $cat_id => $cat): ?>
   <div class="inv-card">
     <div class="cat-heading"><?= htmlspecialchars($cat['name']) ?></div>
+    <div class="inv-table-wrap">
     <table class="inv-table" aria-label="<?= htmlspecialchars($cat['name']) ?> items">
       <thead>
         <tr>
@@ -170,6 +171,7 @@ $oos_count   = count(array_filter($rows, fn($r) => !$r['is_available']));
         <?php endforeach; ?>
       </tbody>
     </table>
+    </div>
   </div>
   <?php endforeach; ?>
 

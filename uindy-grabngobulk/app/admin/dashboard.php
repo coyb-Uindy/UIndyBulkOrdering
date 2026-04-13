@@ -21,10 +21,18 @@ $sql = "SELECT o.id, o.user_name, o.user_email, o.item_name, o.category,
 $orders = $pdo->query($sql)->fetchAll();
 
 function time_ago(string $dt): string {
-    $diff = time() - strtotime($dt);
+    // $dt is UTC from MySQL; compare against current UTC time
+    $d    = new DateTime($dt, new DateTimeZone('UTC'));
+    $diff = time() - $d->getTimestamp();
     if ($diff < 60)   return $diff . 's ago';
     if ($diff < 3600) return floor($diff/60) . 'm ago';
     return floor($diff/3600) . 'h ago';
+}
+
+function fmt_indy_time(string $dt): string {
+    $d = new DateTime($dt, new DateTimeZone('UTC'));
+    $d->setTimezone(new DateTimeZone('America/Indiana/Indianapolis'));
+    return $d->format('g:i A');
 }
 ?>
 <!DOCTYPE html>
@@ -122,7 +130,7 @@ function time_ago(string $dt): string {
       </div>
 
       <div class="ticket__time">
-        🕐 <?= htmlspecialchars(date('g:i A', strtotime($o['ordered_at']))) ?>
+        🕐 <?= htmlspecialchars(fmt_indy_time($o['ordered_at'])) ?>
         &nbsp;(<?= time_ago($o['ordered_at']) ?>)
       </div>
 

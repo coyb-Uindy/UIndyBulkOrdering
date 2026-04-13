@@ -4,7 +4,15 @@ session_start();
 session_unset();
 session_destroy();
 
-// Also trigger IdP logout so the UIndy SSO session is cleared.
-// (Requires SimpleSAMLphp to be configured.)
-require_once __DIR__ . '/auth/saml.php';
-saml_logout('/');   // redirects to index.php after IdP logout
+// Only attempt SAML/IdP logout if SimpleSAMLphp is actually installed.
+// While SAML is not yet configured, skip it and redirect directly.
+$saml_lib = '/var/www/html/simplesamlphp/lib/_autoload.php';
+
+if (file_exists($saml_lib)) {
+    require_once __DIR__ . '/auth/saml.php';
+    saml_logout('/');   // redirects to index.php after IdP logout
+} else {
+    // SAML not configured yet — plain redirect to landing page
+    header('Location: index.php');
+    exit;
+}
