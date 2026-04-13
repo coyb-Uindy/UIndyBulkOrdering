@@ -37,7 +37,7 @@ return [
     'no_orders_title'       => 'Aucune Commande',
     'no_orders_desc'        => 'Vous n\'avez pas encore passé de commande. Retournez au menu pour commencer !',
     'orders_heading'        => 'Vos Commandes',
-    'pack_of'               => 'Paquet de',
+    'pack_of'               => 'Lot de',
 
     'status_pending_title'  => 'En Cours de Préparation',
     'status_pending_badge'  => '⏳ En attente',
@@ -67,15 +67,127 @@ return [
         'Alani'           => 'Alani',
     ],
 
-    // ── Item descriptor word map ────────────────────────────
-    // Applied word-by-word to item names from the DB.
-    // Brand names (Aquafina, Pepsi, etc.) are not in this map and stay unchanged.
+    // ── Full item name translations ─────────────────────────
+    // Checked first in translate_item(). Brand names kept as-is.
+    // Proper French grammar applied (adjective placement, prepositions, etc.)
+    'item_names' => [
+        // ── Sodas & Water ──
+        'Aquafina'              => 'Aquafina',
+        'Lifewater'             => 'Lifewater',
+        'Pepsi'                 => 'Pepsi',
+        'Diet Pepsi'            => 'Pepsi Light',
+        'Pepsi Zero'            => 'Pepsi Zéro',
+        'Pepsi Cherry'          => 'Pepsi Cerise',
+        'Dr. Pepper'            => 'Dr Pepper',
+        'Diet Dr. Pepper'       => 'Dr Pepper Light',
+        'Mtn Dew'               => 'Mountain Dew',
+        'Diet Mtn Dew'          => 'Mountain Dew Light',
+        'Mtn Dew Baja Blast'    => 'Mountain Dew Baja Blast',
+        'Starry'                => 'Starry',
+        'Crush Orange'          => 'Crush Orange',
+        'Crush Grape'           => 'Crush Raisin',
+        'Schweppes Ginger Ale'  => 'Schweppes Ginger Ale',
+        'Root Beer'             => 'Bière de Racine',
+
+        // ── Tropicana Juice ──
+        'Apple Juice'           => 'Jus de Pomme',
+        'Peach'                 => 'Pêche',
+        'Orange Juice'          => 'Jus d\'Orange',
+        'Cranberry'             => 'Canneberge',
+        'Raspberry Lemonade'    => 'Limonade à la Framboise',
+        'Strawberry Lemonade'   => 'Limonade à la Fraise',
+
+        // ── Pure Leaf Tea ──
+        'Extra Sweet Tea'       => 'Thé Extra Sucré',
+        'Sweet Tea'             => 'Thé Sucré',
+        'Unsweetened Tea'       => 'Thé Non Sucré',
+        'Raspberry Tea'         => 'Thé à la Framboise',
+        'Zero Sugar Sweet Tea'  => 'Thé Sucré Zéro Sucre',
+        'Black Cherry Tea'      => 'Thé à la Cerise Noire',
+        'Lemon Tea'             => 'Thé au Citron',
+
+        // ── Propel ──
+        'Black Cherry'          => 'Cerise Noire',
+        'Grape'                 => 'Raisin',
+        'Berry'                 => 'Baie',
+        // 'Strawberry Lemonade' already defined above — same translation
+        'Watermelon'            => 'Pastèque',
+        // 'Peach' already defined above
+
+        // ── Muscle Milk ──
+        'Vanilla'               => 'Vanille',
+        'Chocolate'             => 'Chocolat',
+        'Chocolate Peanut Butter' => 'Chocolat au Beurre de Cacahuète',
+        'Strawberry'            => 'Fraise',
+
+        // ── Rockstar ──
+        'Sugar Free'            => 'Sans Sucre',
+        'Whipped Strawberry'    => 'Fraise Fouettée',
+        'Orange'                => 'Orange',
+        'Recovery Lemonade'     => 'Limonade de Récupération',
+        'Recovery Strawberry Lemon' => 'Récupération Fraise-Citron',
+        'Recovery Berryade'     => 'Boisson de Récupération aux Baies',
+        'Fruit Punch'           => 'Punch aux Fruits',
+
+        // ── Starbucks ──
+        'Mocha'                 => 'Moka',
+        'Caramel'               => 'Caramel',
+        'Tripleshot Caramel'    => 'Triple Shot Caramel',
+        'Tripleshot Vanilla'    => 'Triple Shot Vanille',
+        'Tripleshot Mocha'      => 'Triple Shot Moka',
+        'Pink Drink'            => 'Boisson Rosée',
+
+        // ── 16oz Celsius ──
+        'Energy Blueberry Lemonade' => 'Limonade Énergisante à la Myrtille',
+        'Energy Tropical Peach'     => 'Pêche Tropicale Énergisante',
+        'Energy Watermelon Twist'   => 'Pastèque Énergisante',
+
+        // ── 12oz Celsius ──
+        'Mango Lemonade'        => 'Limonade à la Mangue',
+        // 'Grape' already defined
+        'Cherry Cola'           => 'Cola à la Cerise',
+        'Peach Vibe'            => 'Ambiance Pêche',
+        'Arctic Vibe'           => 'Ambiance Arctique',
+        'Galaxy Vibe'           => 'Ambiance Galaxie',
+        'Cosmic'                => 'Cosmique',
+        'Blu Razz Lemonade'     => 'Limonade Framboise Bleue',
+        // 'Watermelon' already defined
+        'Green Apple Cherry'    => 'Pomme Verte à la Cerise',
+        'Blue Crush'            => 'Crush Bleu',
+        'Dragonberry'           => 'Dragonbaie',
+
+        // ── Gatorade ──
+        // 'Orange' already defined
+        'Lemon Lime'            => 'Citron-Citron Vert',
+        // 'Fruit Punch' already defined
+        'Glacier Freeze'        => 'Glacier Glacé',
+        'Cool Blue'             => 'Bleu Frais',
+        'Rip Tide'              => 'Vague Déferlante',
+        // 'Grape' already defined
+        'Green Apple'           => 'Pomme Verte',
+        // 'Watermelon' already defined
+
+        // ── Alani ──
+        'Cherry Limeade'        => 'Citronnade à la Cerise',
+        'Classic Cola'          => 'Cola Classique',
+        'Strawberry Lemon'      => 'Fraise au Citron',
+        'Wild Berry'            => 'Baies Sauvages',
+        'Orange Kiss'           => 'Baiser d\'Orange',
+        'Sherbet'               => 'Sorbet',
+        'Hawaiian Shaved Ice'   => 'Granité Hawaïen',
+        'Juicy Peach'           => 'Pêche Juteuse',
+        'Cotton Candy'          => 'Barbe à Papa',
+        'Breezeberry'           => 'Breezebaie',
+        // 'Cosmic' already defined
+    ],
+
+    // ── Item word map (fallback for DB items not in item_names) ─
     'item_word_map' => [
         'Cherry'       => 'Cerise',
         'Grape'        => 'Raisin',
         'Strawberry'   => 'Fraise',
         'Berry'        => 'Baie',
-        'Limeade'      => 'Limonade',
+        'Limeade'      => 'Citronnade',
         'Lemonade'     => 'Limonade',
         'Peach'        => 'Pêche',
         'Watermelon'   => 'Pastèque',
@@ -85,7 +197,7 @@ return [
         'Blueberry'    => 'Myrtille',
         'Raspberry'    => 'Framboise',
         'Cranberry'    => 'Canneberge',
-        'Black'        => 'Noir(e)',
+        'Black'        => 'Noir',         // base form; gender varies by noun
         'Unsweetened'  => 'Non sucré',
         'Sweet'        => 'Sucré',
         'Extra'        => 'Extra',
@@ -102,21 +214,21 @@ return [
         'Fruit'        => 'Fruits',
         'Classic'      => 'Classique',
         'Wild'         => 'Sauvage',
-        'Cotton'       => 'Barbe à',
+        'Cotton'       => 'Barbe à',      // Cotton Candy → Barbe à papa (safety net)
         'Candy'        => 'papa',
         'Juicy'        => 'Juteux',
         'Sherbet'      => 'Sorbet',
-        'Ice'          => 'Glacé',
+        'Ice'          => 'Givré',
         'Chocolate'    => 'Chocolat',
         'Vanilla'      => 'Vanille',
         'Caramel'      => 'Caramel',
         'Mocha'        => 'Moka',
         'Freeze'       => 'Glacé',
         'Cool'         => 'Frais',
-        'Diet'         => 'Diet',
+        'Diet'         => 'Diet',          // French soda labels use Diet, not Diète
         'Ginger'       => 'Gingembre',
         'Whipped'      => 'Fouetté',
-        'Peanut'       => 'Beurre de',
+        'Peanut'       => 'Beurre de',    // Peanut Butter → Beurre de cacahuète (safety net)
         'Butter'       => 'cacahuète',
         'Lemon'        => 'Citron',
         'Tea'          => 'Thé',

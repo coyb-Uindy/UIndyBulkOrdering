@@ -76,8 +76,10 @@ $cat_emojis = [
     'Alani'           => '🌸',
 ];
 
-// Translate an item name word-by-word using the lang word map
-function translate_item(string $name, array $word_map): string {
+// Translate an item name: check full-phrase lookup first (correct grammar),
+// then fall back to word-by-word substitution for any DB items not in the table.
+function translate_item(string $name, array $item_names, array $word_map): string {
+    if (isset($item_names[$name])) return $item_names[$name];
     if (empty($word_map)) return $name;
     return implode(' ', array_map(fn($w) => $word_map[$w] ?? $w, explode(' ', $name)));
 }
@@ -203,7 +205,7 @@ function translate_item(string $name, array $word_map): string {
         <ul class="item-list" role="list">
           <?php foreach ($cat['items'] as $item): ?>
           <?php $unavailable = !$item['is_available'];
-                $display_item = translate_item($item['name'], $t['item_word_map']); ?>
+                $display_item = translate_item($item['name'], $t['item_names'] ?? [], $t['item_word_map']); ?>
           <li class="item-row<?= $unavailable ? ' item-row--oos' : '' ?>" role="listitem">
 
             <div class="item-img" aria-hidden="true">
@@ -216,7 +218,7 @@ function translate_item(string $name, array $word_map): string {
 
             <div class="item-info">
               <div class="item-name"><?= htmlspecialchars($display_item) ?></div>
-              <div class="item-meta">Pack of <?= $item['pack_qty'] ?></div>
+              <div class="item-meta"><?= htmlspecialchars($t['pack_of']) ?> <?= $item['pack_qty'] ?></div>
               <?php if ($unavailable): ?>
                 <div class="oos-badge"><?= htmlspecialchars($t['out_of_stock']) ?></div>
               <?php endif; ?>
@@ -295,7 +297,9 @@ function translate_item(string $name, array $word_map): string {
 </div>
 
 <script>
-const PLACING_TEXT = <?= json_encode($t['placing_order']) ?>;
+const PACK_OF = <?= json_encode($t['pack_of']) ?>;
+
+
 
 // ---- Category accordion ----
 function toggleCategory(id) {
@@ -327,7 +331,7 @@ function openConfirm(id, name, category, cost, pack) {
   pendingData = { id, name, category, cost, pack };
   document.getElementById('modalItemName').textContent = name;
   document.getElementById('modalCost').textContent     = '$' + parseFloat(cost).toFixed(2);
-  document.getElementById('modalPack').textContent     = 'Pack of ' + pack;
+  document.getElementById('modalPack').textContent     = PACK_OF + ' ' + pack;
   document.getElementById('modalCat').textContent      = category;
   document.getElementById('hiddenItemId').value   = id;
   document.getElementById('hiddenItemName').value = name;

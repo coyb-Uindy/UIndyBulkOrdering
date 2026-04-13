@@ -67,7 +67,9 @@ return [
         'Alani'           => 'Alani',
     ],
 
-    // ── Item descriptor word map (applied word-by-word to item names) ──
-    // English: identity map — no translation needed
+    // ── Item name translations (English: none needed — use DB names as-is) ──
+    'item_names'    => [],
+
+    // ── Item descriptor word map (English: identity — no substitution) ──
     'item_word_map' => [],
 ];
