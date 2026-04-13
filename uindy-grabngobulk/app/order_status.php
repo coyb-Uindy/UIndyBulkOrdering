@@ -1,55 +1,54 @@
 <?php
-// place_order.php — AJAX endpoint, accepts POST, returns JSON
-
+// order_status.php — AJAX endpoint; returns current status of a user's latest order
 session_start();
 header('Content-Type: application/json');
 
-// Must be authenticated
 if (!isset($_SESSION['user_email'])) {
     header('Location: index.php');
     exit;
 }
 
 require_once 'db.php';
-// TEMPORARY 
-$pdo->exec("INSERT IGNORE INTO users (email, first_name, last_name) 
-            VALUES ('test@uindy.edu', 'Test', 'Student')");
 
-// Validate inputs
-$item_id   = filter_input(INPUT_POST, 'item_id',   FILTER_VALIDATE_INT);
-$item_name = trim($_POST['item_name'] ?? '');
-$category  = trim($_POST['category']  ?? '');
-$case_cost = filter_input(INPUT_POST, 'case_cost', FILTER_VALIDATE_FLOAT);
-$pack_qty  = filter_input(INPUT_POST, 'pack_qty',  FILTER_VALIDATE_INT);
+$email = $_SESSION['user_email'];
 
-if (!$item_id || !$item_name || !$category || $case_cost === false || !$pack_qty) {
-    echo json_encode(['success' => false, 'error' => 'Invalid order data.']);
+// If a specific order_id is requested and belongs to this user, use it.
+// Otherwise, fall back to the user's most recent order.
+$order_id = filter_input(INPUT_GET, 'order_id', FILTER_VALIDATE_INT);
+
+if ($order_id) {
+    $stmt = $pdo->prepare(
+        'SELECT id, item_name, category, case_cost, pack_qty, status, ordered_at
+         FROM orders
+         WHERE id = ? AND user_email = ?
+         LIMIT 1'
+    );
+    $stmt->execute([$order_id, $email]);
+} else {
+    $stmt = $pdo->prepare(
+        'SELECT id, item_name, category, case_cost, pack_qty, status, ordered_at
+         FROM orders
+         WHERE user_email = ?
+         ORDER BY ordered_at DESC
+         LIMIT 1'
+    );
+    $stmt->execute([$email]);
+}
+
+$order = $stmt->fetch();
+
+if (!$order) {
+    echo json_encode(['found' => false]);
     exit;
 }
 
-// Verify the item actually exists in the DB (prevents spoofing)
-$check = $pdo->prepare('SELECT id FROM menu_items WHERE id = ?');
-$check->execute([$item_id]);
-if (!$check->fetch()) {
-    echo json_encode(['success' => false, 'error' => 'Item not found.']);
-    exit;
-}
-
-$email    = $_SESSION['user_email'];
-$name     = trim(($_SESSION['user_first_name'] ?? '') . ' ' . ($_SESSION['user_last_name'] ?? ''));
-
-$sql = "INSERT INTO orders (user_email, user_name, item_id, item_name, category, case_cost, pack_qty)
-        VALUES (?, ?, ?, ?, ?, ?, ?)";
-$stmt = $pdo->prepare($sql);
-
-try {
-    $stmt->execute([$email, $name, $item_id, $item_name, $category, $case_cost, $pack_qty]);
-    $new_order_id = (int) $pdo->lastInsertId();
-
-    // Remember this order so "My Order" in the nav can find it across page loads
-    $_SESSION['last_order_id'] = $new_order_id;
-
-    echo json_encode(['success' => true, 'order_id' => $new_order_id]);
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'error' => 'Database error.']);
-}
+echo json_encode([
+    'found'      => true,
+    'order_id'   => (int) $order['id'],
+    'item_name'  => $order['item_name'],
+    'category'   => $order['category'],
+    'case_cost'  => number_format((float) $order['case_cost'], 2),
+    'pack_qty'   => (int) $order['pack_qty'],
+    'status'     => $order['status'],   // 'pending' | 'completed' | 'denied'
+    'ordered_at' => $order['ordered_at'],
+]);
