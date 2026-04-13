@@ -6,11 +6,18 @@ header('Content-Type: application/json');
 
 // Must be authenticated
 if (!isset($_SESSION['user_email'])) {
-    echo json_encode(['success' => false, 'error' => 'Not authenticated.']);
+    header('Location: index.php');
     exit;
 }
 
 require_once 'db.php';
+
+// Server-side hours enforcement — prevents bypass even if JS is tampered with
+if (!is_ordering_open()) {
+    echo json_encode(['success' => false, 'error' => 'Ordering is currently unavailable.']);
+    exit;
+}
+
 // TEMPORARY 
 $pdo->exec("INSERT IGNORE INTO users (email, first_name, last_name) 
             VALUES ('test@uindy.edu', 'Test', 'Student')");
@@ -44,7 +51,12 @@ $stmt = $pdo->prepare($sql);
 
 try {
     $stmt->execute([$email, $name, $item_id, $item_name, $category, $case_cost, $pack_qty]);
-    echo json_encode(['success' => true, 'order_id' => $pdo->lastInsertId()]);
+    $new_order_id = (int) $pdo->lastInsertId();
+
+    // Remember this order so "My Order" in the nav can find it across page loads
+    $_SESSION['last_order_id'] = $new_order_id;
+
+    echo json_encode(['success' => true, 'order_id' => $new_order_id]);
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'error' => 'Database error.']);
 }

@@ -14,7 +14,7 @@ if (!isset($_SESSION['user_email'])) {
 
 // Language
 $lang_code = $_SESSION['lang'] ?? 'en';
-$allowed   = ['en', 'fr'];
+$allowed   = ['en', 'fr', 'es', 'de'];
 if (!in_array($lang_code, $allowed, true)) $lang_code = 'en';
 $t = require __DIR__ . "/lang/{$lang_code}.php";
 
@@ -88,7 +88,7 @@ $pending_ids = array_map(
   <div class="orders-page-header">
     <h1><?= htmlspecialchars($t['orders_heading']) ?></h1>
     <div class="orders-actions">
-      <button class="btn-refresh-now" onclick="location.reload()" id="refreshBtn">
+      <button class="btn-refresh-now" onclick="location.reload()">
         <?= htmlspecialchars($t['refresh_now']) ?>
       </button>
       <a href="menu.php" class="btn-back-inline"><?= htmlspecialchars($t['back_to_menu']) ?></a>

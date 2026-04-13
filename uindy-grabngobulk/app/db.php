@@ -22,3 +22,15 @@ try {
     http_response_code(500);
     die(json_encode(['error' => 'Database connection failed.']));
 }
+
+/**
+ * Returns true if the Grab-N-Go is currently accepting orders (Indianapolis time).
+ *   Mon–Fri : 8:00 AM – 12:00 AM (midnight)
+ *   Sat–Sun : 2:00 PM – 12:00 AM (midnight)
+ */
+function is_ordering_open(): bool {
+    $now  = new DateTime('now', new DateTimeZone('America/Indiana/Indianapolis'));
+    $dow  = (int) $now->format('N');   // 1 = Mon … 7 = Sun
+    $hour = (int) $now->format('G');   // 0–23
+    return ($dow <= 5) ? ($hour >= 8) : ($hour >= 14);
+}

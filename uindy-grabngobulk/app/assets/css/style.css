@@ -920,7 +920,6 @@ body {
 }
 
 .order-card__body { }
-
 .order-card__item {
   font-size: .8rem;
   font-weight: 700;
@@ -958,4 +957,43 @@ body {
   border-top: 1px solid var(--border);
   padding-top: .55rem;
   margin-top: .65rem;
+}
+
+/* ── Clear orders button ─────────────────────────────────── */
+.btn-clear-orders {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: #fff1f2;
+  color: #be123c;
+  border: 1.5px solid #fecdd3;
+  border-radius: 8px;
+  padding: .45rem .9rem;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-clear-orders:hover { background: #ffe4e6; border-color: #fda4af; }
+
+/* ── Ordering closed banner ──────────────────────────────── */
+.closed-banner {
+  background: #fff7ed;
+  border: 1.5px solid #fed7aa;
+  border-radius: var(--radius);
+  padding: .85rem 1.1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  color: #9a3412;
+  font-size: .88rem;
+}
+.closed-banner strong { font-size: .95rem; }
+
+/* ── Language grid — 4 buttons in 2×2 ───────────────────── */
+.lang-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .35rem;
 }

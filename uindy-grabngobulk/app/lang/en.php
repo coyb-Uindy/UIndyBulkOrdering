@@ -11,7 +11,7 @@ return [
 
     // ── Hero ────────────────────────────────────────────────
     'hero_title'        => 'Bulk Beverage Pre-Order',
-    'hero_desc'         => 'Select a case below and your order will be ready at the Grab-N-Go before you arrive — no waiting in line! Dining-approved discounts apply for eligible bulk orders.',
+    'hero_desc'         => 'Select a case below and your order will be ready at the Grab-N-Go before you arrive. Dining-approved discounts apply for eligible bulk orders.',
 
     // ── Menu ────────────────────────────────────────────────
     'section_label'     => 'Available Beverages',
@@ -19,6 +19,10 @@ return [
     'out_of_stock'      => 'Out of Stock',
     'opt_singular'      => 'option',
     'opt_plural'        => 'options',
+
+    'ordering_closed'       => '🕐 Ordering is currently unavailable.',
+    'ordering_closed_hours' => 'Grab-N-Go is open Mon–Fri 8 AM–12 AM and Sat–Sun 2 PM–12 AM.',
+    'ordering_closed_btn'   => 'Currently Closed',
 
     // ── Confirmation Modal ──────────────────────────────────
     'modal_title'       => 'Confirm Bulk Order',
@@ -43,7 +47,7 @@ return [
     'status_pending_badge'  => '⏳ Awaiting Staff',
     'status_complete_title' => 'Ready for Pickup! 🎉',
     'status_complete_badge' => '✅ Complete',
-    'status_complete_msg'   => 'Head to the Grab-N-Go — your order is packed and waiting. No line!',
+    'status_complete_msg'   => 'Head to the Grab-N-Go — your order is packed and waiting for you!',
     'status_denied_title'   => 'Order Unavailable',
     'status_denied_badge'   => '❌ Denied',
     'status_denied_msg'     => 'Your order was unfortunately denied — the item may be out of stock. Please return to the menu to choose another item.',

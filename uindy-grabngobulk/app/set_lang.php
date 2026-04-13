@@ -2,7 +2,7 @@
 // set_lang.php — sets the user's language preference in session
 session_start();
 
-$allowed = ['en', 'fr'];
+$allowed = ['en', 'fr', 'es', 'de'];
 $lang    = $_GET['lang'] ?? 'en';
 
 if (!in_array($lang, $allowed, true)) {

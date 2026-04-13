@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_email'])) {
 
 // ── Language ────────────────────────────────────────────────
 $lang_code = $_SESSION['lang'] ?? 'en';
-$allowed   = ['en', 'fr'];
+$allowed   = ['en', 'fr', 'es', 'de'];
 if (!in_array($lang_code, $allowed, true)) $lang_code = 'en';
 $t = require __DIR__ . "/lang/{$lang_code}.php";
 
@@ -76,6 +76,8 @@ $cat_emojis = [
     'Alani'           => '🌸',
 ];
 
+$ordering_open = is_ordering_open();
+
 // Translate an item name: check full-phrase lookup first (correct grammar),
 // then fall back to word-by-word substitution for any DB items not in the table.
 function translate_item(string $name, array $item_names, array $word_map): string {
@@ -128,15 +130,13 @@ function translate_item(string $name, array $item_names, array $word_map): strin
       <div class="cog-menu" id="cogMenu" role="menu">
 
         <!-- Language selector -->
-        <div class="lang-section" role="group" aria-label="Language / Langue">
+        <div class="lang-section" role="group" aria-label="Language / Langue / Idioma / Sprache">
           <div class="lang-label"><?= htmlspecialchars($t['language']) ?></div>
           <div class="lang-options">
-            <a href="set_lang.php?lang=en"
-               class="lang-btn<?= $lang_code === 'en' ? ' lang-btn--active' : '' ?>"
-               role="menuitem" hreflang="en">🇺🇸 English</a>
-            <a href="set_lang.php?lang=fr"
-               class="lang-btn<?= $lang_code === 'fr' ? ' lang-btn--active' : '' ?>"
-               role="menuitem" hreflang="fr">🇫🇷 Français</a>
+            <a href="set_lang.php?lang=en" class="lang-btn<?= $lang_code === 'en' ? ' lang-btn--active' : '' ?>" role="menuitem" hreflang="en">🇺🇸 EN</a>
+            <a href="set_lang.php?lang=fr" class="lang-btn<?= $lang_code === 'fr' ? ' lang-btn--active' : '' ?>" role="menuitem" hreflang="fr">🇫🇷 FR</a>
+            <a href="set_lang.php?lang=es" class="lang-btn<?= $lang_code === 'es' ? ' lang-btn--active' : '' ?>" role="menuitem" hreflang="es">🇪🇸 ES</a>
+            <a href="set_lang.php?lang=de" class="lang-btn<?= $lang_code === 'de' ? ' lang-btn--active' : '' ?>" role="menuitem" hreflang="de">🇩🇪 DE</a>
           </div>
         </div>
 
@@ -164,6 +164,14 @@ function translate_item(string $name, array $item_names, array $word_map): strin
       <p><?= htmlspecialchars($t['hero_desc']) ?></p>
     </div>
   </section>
+
+  <!-- Closed hours banner -->
+  <?php if (!$ordering_open): ?>
+  <div class="closed-banner" role="alert">
+    <strong><?= htmlspecialchars($t['ordering_closed']) ?></strong>
+    <span><?= htmlspecialchars($t['ordering_closed_hours']) ?></span>
+  </div>
+  <?php endif; ?>
 
   <!-- Category list -->
   <p class="section-label"><?= htmlspecialchars($t['section_label']) ?></p>
@@ -230,6 +238,11 @@ function translate_item(string $name, array $item_names, array $word_map): strin
               <button class="btn-interest btn-interest--oos" disabled
                       aria-label="<?= htmlspecialchars($item['name']) ?> — <?= htmlspecialchars($t['out_of_stock']) ?>">
                 <?= htmlspecialchars($t['out_of_stock']) ?>
+              </button>
+            <?php elseif (!$ordering_open): ?>
+              <button class="btn-interest btn-interest--oos" disabled
+                      aria-label="<?= htmlspecialchars($t['ordering_closed_btn']) ?>">
+                <?= htmlspecialchars($t['ordering_closed_btn']) ?>
               </button>
             <?php else: ?>
               <button class="btn-interest"

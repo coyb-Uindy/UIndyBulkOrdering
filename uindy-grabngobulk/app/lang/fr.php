@@ -11,7 +11,7 @@ return [
 
     // ── Hero ────────────────────────────────────────────────
     'hero_title'        => 'Pré-commande de Boissons en Vrac',
-    'hero_desc'         => 'Sélectionnez une caisse ci-dessous et votre commande sera prête au Grab-N-Go avant votre arrivée — sans faire la queue ! Des rabais approuvés par la restauration s\'appliquent aux commandes éligibles.',
+    'hero_desc'         => 'Sélectionnez une caisse ci-dessous et votre commande sera prête au Grab-N-Go avant votre arrivée. Des rabais approuvés par la restauration s\'appliquent aux commandes éligibles.',
 
     // ── Menu ────────────────────────────────────────────────
     'section_label'     => 'Boissons Disponibles',
@@ -19,6 +19,10 @@ return [
     'out_of_stock'      => 'Rupture de Stock',
     'opt_singular'      => 'option',
     'opt_plural'        => 'options',
+
+    'ordering_closed'       => '🕐 Les commandes ne sont pas disponibles en ce moment.',
+    'ordering_closed_hours' => 'Grab-N-Go est ouvert lun.–ven. 8h–0h et sam.–dim. 14h–0h.',
+    'ordering_closed_btn'   => 'Fermé',
 
     // ── Confirmation Modal ──────────────────────────────────
     'modal_title'       => 'Confirmer la Commande en Vrac',
@@ -43,7 +47,7 @@ return [
     'status_pending_badge'  => '⏳ En attente',
     'status_complete_title' => 'Prête à Récupérer ! 🎉',
     'status_complete_badge' => '✅ Complète',
-    'status_complete_msg'   => 'Rendez-vous au Grab-N-Go — votre commande est prête. Pas besoin de faire la queue !',
+    'status_complete_msg'   => 'Rendez-vous au Grab-N-Go — votre commande est prête et vous attend !',
     'status_denied_title'   => 'Commande Indisponible',
     'status_denied_badge'   => '❌ Refusée',
     'status_denied_msg'     => 'Votre commande a malheureusement été refusée — l\'article peut être en rupture de stock. Retournez au menu pour choisir un autre article.',
