@@ -80,6 +80,7 @@ function time_ago(string $dt): string {
       </div>
     </div>
     <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
+      <a class="btn-logout" href="inventory.php">🗂️ Manage Inventory</a>
       <button class="btn-logout" onclick="location.reload()">🔄 Refresh Now</button>
       <a class="btn-logout" href="logout.php">Sign Out</a>
     </div>

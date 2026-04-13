@@ -1,6 +1,5 @@
 <?php
 // menu.php — main ordering interface (requires SAML session)
-
 session_start();
 
 // TEMPORARY — remove before final submission
@@ -14,6 +13,12 @@ if (!isset($_SESSION['user_email'])) {
     exit;
 }
 
+// ── Language ────────────────────────────────────────────────
+$lang_code = $_SESSION['lang'] ?? 'en';
+$allowed   = ['en', 'fr'];
+if (!in_array($lang_code, $allowed, true)) $lang_code = 'en';
+$t = require __DIR__ . "/lang/{$lang_code}.php";
+
 require_once 'db.php';
 
 $first_name = htmlspecialchars($_SESSION['user_first_name'] ?? '');
@@ -21,10 +26,21 @@ $last_name  = htmlspecialchars($_SESSION['user_last_name']  ?? '');
 $email      = htmlspecialchars($_SESSION['user_email']      ?? '');
 $display    = trim("$first_name $last_name") ?: $email;
 
-// Load all categories with their items in one query
+// ── Active order badge ───────────────────────────────────────
+// Show indicator if user has a pending order (check session first, then DB)
+$active_order_id = $_SESSION['last_order_id'] ?? 0;
+$has_active_order = false;
+if ($active_order_id) {
+    $chk = $pdo->prepare('SELECT status FROM orders WHERE id = ? AND user_email = ? LIMIT 1');
+    $chk->execute([$active_order_id, $_SESSION['user_email']]);
+    $chk_row = $chk->fetch();
+    $has_active_order = ($chk_row && $chk_row['status'] === 'pending');
+}
+
+// ── Load menu (include is_available) ────────────────────────
 $sql = "SELECT c.id AS cat_id, c.name AS cat_name, c.icon_path,
                i.id AS item_id, i.name AS item_name,
-               i.case_cost, i.pack_qty, i.image_path
+               i.case_cost, i.pack_qty, i.image_path, i.is_available
         FROM categories c
         JOIN menu_items i ON i.category_id = c.id
         ORDER BY c.id, i.id";
@@ -42,31 +58,26 @@ foreach ($rows as $r) {
         ];
     }
     $categories[$cid]['items'][] = [
-        'id'        => $r['item_id'],
-        'name'      => $r['item_name'],
-        'case_cost' => $r['case_cost'],
-        'pack_qty'  => $r['pack_qty'],
-        'image'     => $r['image_path'],
+        'id'           => $r['item_id'],
+        'name'         => $r['item_name'],
+        'case_cost'    => $r['case_cost'],
+        'pack_qty'     => $r['pack_qty'],
+        'image'        => $r['image_path'],
+        'is_available' => (bool) $r['is_available'],
     ];
 }
 
-// Emoji fallback icons per category (replace with real images later)
 $cat_emojis = [
-    'Sodas & Water'    => '🥤',
-    'Tropicana Juice'  => '🍊',
-    'Pure Leaf Tea'    => '🍵',
-    'Propel'           => '💧',
-    'Muscle Milk'      => '🥛',
-    'Rockstar'         => '⚡',
-    'Starbucks'        => '☕',
-    '16oz Celsius'     => '🔥',
-    '12oz Celsius'     => '❄️',
-    'Gatorade'         => '⚡',
-    'Alani'            => '🌸',
+    'Sodas & Water'   => '🥤', 'Tropicana Juice' => '🍊',
+    'Pure Leaf Tea'   => '🍵', 'Propel'          => '💧',
+    'Muscle Milk'     => '🥛', 'Rockstar'        => '⚡',
+    'Starbucks'       => '☕', '16oz Celsius'    => '🔥',
+    '12oz Celsius'    => '❄️', 'Gatorade'        => '⚡',
+    'Alani'           => '🌸',
 ];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= $lang_code ?>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,8 +91,8 @@ $cat_emojis = [
   <div class="topnav__brand">
     <div class="topnav__logo">GNG</div>
     <div>
-      <div class="topnav__title">Grab-N-Go Bulk Order</div>
-      <div class="topnav__subtitle">University of Indianapolis</div>
+      <div class="topnav__title"><?= htmlspecialchars($t['nav_title']) ?></div>
+      <div class="topnav__subtitle"><?= htmlspecialchars($t['nav_subtitle']) ?></div>
     </div>
   </div>
 
@@ -91,24 +102,43 @@ $cat_emojis = [
       <span><?= $email ?></span>
     </div>
 
+    <!-- ── My Order button (outside cogwheel, always visible) ── -->
+    <a href="my_order.php<?= $active_order_id ? '?order_id=' . $active_order_id : '' ?>"
+       class="my-order-btn<?= $has_active_order ? ' my-order-btn--active' : '' ?>"
+       aria-label="<?= htmlspecialchars($t['my_order']) ?>">
+      <?= htmlspecialchars($t['my_order']) ?>
+      <?php if ($has_active_order): ?>
+        <span class="my-order-dot" aria-label="Active order pending"></span>
+      <?php endif; ?>
+    </a>
+
     <!-- Cogwheel settings menu -->
     <div class="cog-wrapper" id="cogWrapper">
       <button class="cog-btn" id="cogBtn" aria-haspopup="true" aria-expanded="false" aria-label="Settings">
         ⚙️
       </button>
       <div class="cog-menu" id="cogMenu" role="menu">
-        <!-- Language placeholder -->
-        <button role="menuitem" onclick="alert('Language selection coming soon!')">
-          🌐 Language
-        </button>
+
+        <!-- Language selector -->
+        <div class="lang-section" role="group" aria-label="Language / Langue">
+          <div class="lang-label"><?= htmlspecialchars($t['language']) ?></div>
+          <div class="lang-options">
+            <a href="set_lang.php?lang=en"
+               class="lang-btn<?= $lang_code === 'en' ? ' lang-btn--active' : '' ?>"
+               role="menuitem" hreflang="en">🇺🇸 English</a>
+            <a href="set_lang.php?lang=fr"
+               class="lang-btn<?= $lang_code === 'fr' ? ' lang-btn--active' : '' ?>"
+               role="menuitem" hreflang="fr">🇫🇷 Français</a>
+          </div>
+        </div>
+
         <hr>
-        <!-- Admin portal link -->
         <a href="admin/login.php" role="menuitem">
-          🔐 Admin Login
+          <?= htmlspecialchars($t['admin_login']) ?>
         </a>
         <hr>
         <a href="logout.php" role="menuitem">
-          🚪 Sign Out
+          <?= htmlspecialchars($t['sign_out']) ?>
         </a>
       </div>
     </div>
@@ -122,36 +152,30 @@ $cat_emojis = [
   <section class="hero" aria-label="Page introduction">
     <div class="hero__icon">🛒</div>
     <div>
-      <h1>Bulk Beverage Pre-Order</h1>
-      <p>
-        Select a case below and your order will be ready at the Grab-N-Go
-        before you arrive — no waiting in line!
-        Dining-approved discounts apply for eligible bulk orders.
-      </p>
+      <h1><?= htmlspecialchars($t['hero_title']) ?></h1>
+      <p><?= htmlspecialchars($t['hero_desc']) ?></p>
     </div>
   </section>
 
   <!-- Category list -->
-  <p class="section-label">Available Beverages</p>
+  <p class="section-label"><?= htmlspecialchars($t['section_label']) ?></p>
   <div class="category-list" id="categoryList">
 
   <?php foreach ($categories as $cat_id => $cat): ?>
     <?php
       $emoji    = $cat_emojis[$cat['name']] ?? '🥤';
       $item_cnt = count($cat['items']);
+      $label_key = $item_cnt !== 1 ? 'opt_plural' : 'opt_singular';
     ?>
     <div class="category-card" id="cat-<?= $cat_id ?>">
 
-      <!-- Accordion header -->
       <div class="category-header"
-           role="button"
-           tabindex="0"
+           role="button" tabindex="0"
            aria-expanded="false"
            aria-controls="body-<?= $cat_id ?>"
            onclick="toggleCategory(<?= $cat_id ?>)"
            onkeydown="if(event.key==='Enter'||event.key===' ')toggleCategory(<?= $cat_id ?>)">
 
-        <!-- Category icon (swap with <img> once you have artwork) -->
         <div class="category-icon">
           <?php if ($cat['icon_path']): ?>
             <img src="<?= htmlspecialchars($cat['icon_path']) ?>" alt="<?= htmlspecialchars($cat['name']) ?> icon">
@@ -162,19 +186,18 @@ $cat_emojis = [
 
         <div>
           <div class="category-name"><?= htmlspecialchars($cat['name']) ?></div>
-          <div class="category-count"><?= $item_cnt ?> option<?= $item_cnt !== 1 ? 's' : '' ?></div>
+          <div class="category-count"><?= $item_cnt ?> <?= htmlspecialchars($t[$label_key]) ?></div>
         </div>
 
         <span class="category-chevron" aria-hidden="true">▼</span>
       </div>
 
-      <!-- Accordion body -->
       <div class="category-body" id="body-<?= $cat_id ?>">
         <ul class="item-list" role="list">
           <?php foreach ($cat['items'] as $item): ?>
-          <li class="item-row" role="listitem">
+          <?php $unavailable = !$item['is_available']; ?>
+          <li class="item-row<?= $unavailable ? ' item-row--oos' : '' ?>" role="listitem">
 
-            <!-- Flavor image slot (swap with <img> once you have photos) -->
             <div class="item-img" aria-hidden="true">
               <?php if ($item['image']): ?>
                 <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
@@ -186,56 +209,65 @@ $cat_emojis = [
             <div class="item-info">
               <div class="item-name"><?= htmlspecialchars($item['name']) ?></div>
               <div class="item-meta">Pack of <?= $item['pack_qty'] ?></div>
+              <?php if ($unavailable): ?>
+                <div class="oos-badge"><?= htmlspecialchars($t['out_of_stock']) ?></div>
+              <?php endif; ?>
             </div>
 
             <div class="item-cost">$<?= number_format($item['case_cost'], 2) ?></div>
 
-            <button class="btn-interest"
-                    aria-label="Order <?= htmlspecialchars($item['name']) ?>"
-                    onclick="openConfirm(
-                      <?= $item['id'] ?>,
-                      '<?= addslashes(htmlspecialchars($item['name'])) ?>',
-                      '<?= addslashes(htmlspecialchars($cat['name'])) ?>',
-                      <?= $item['case_cost'] ?>,
-                      <?= $item['pack_qty'] ?>
-                    )">
-              Order
-            </button>
+            <?php if ($unavailable): ?>
+              <button class="btn-interest btn-interest--oos" disabled
+                      aria-label="<?= htmlspecialchars($item['name']) ?> — <?= htmlspecialchars($t['out_of_stock']) ?>">
+                <?= htmlspecialchars($t['out_of_stock']) ?>
+              </button>
+            <?php else: ?>
+              <button class="btn-interest"
+                      aria-label="<?= htmlspecialchars($t['order_btn']) ?> <?= htmlspecialchars($item['name']) ?>"
+                      onclick="openConfirm(
+                        <?= $item['id'] ?>,
+                        '<?= addslashes(htmlspecialchars($item['name'])) ?>',
+                        '<?= addslashes(htmlspecialchars($cat['name'])) ?>',
+                        <?= $item['case_cost'] ?>,
+                        <?= $item['pack_qty'] ?>
+                      )">
+                <?= htmlspecialchars($t['order_btn']) ?>
+              </button>
+            <?php endif; ?>
 
           </li>
           <?php endforeach; ?>
         </ul>
-      </div><!-- /category-body -->
+      </div>
 
-    </div><!-- /category-card -->
+    </div>
   <?php endforeach; ?>
 
-  </div><!-- /category-list -->
+  </div>
 </main>
 
 <!-- ===== Confirmation Modal ===== -->
 <div class="modal-overlay" id="confirmOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal">
-    <h2 id="modalTitle">Confirm Bulk Order</h2>
-    <p class="modal-subtitle">Please review your selection before submitting.</p>
+    <h2 id="modalTitle"><?= htmlspecialchars($t['modal_title']) ?></h2>
+    <p class="modal-subtitle"><?= htmlspecialchars($t['modal_subtitle']) ?></p>
 
     <div class="modal-item-card">
       <div class="item-title" id="modalItemName">—</div>
       <div class="detail-row">
-        <span>Case Cost</span>
+        <span><?= htmlspecialchars($t['case_cost']) ?></span>
         <strong id="modalCost">—</strong>
       </div>
       <div class="detail-row">
-        <span>Pack Amount</span>
+        <span><?= htmlspecialchars($t['pack_amount']) ?></span>
         <strong id="modalPack">—</strong>
       </div>
       <div class="detail-row">
-        <span>Category</span>
+        <span><?= htmlspecialchars($t['category_label']) ?></span>
         <strong id="modalCat">—</strong>
       </div>
-      <!-- Discount row — values will be filled in once the discount system is built -->
       <div class="discount-placeholder">
-        ✨ Dining discount &amp; discounted total — coming soon
+        <?= htmlspecialchars($t['discount_coming']) ?>
       </div>
     </div>
 
@@ -247,17 +279,19 @@ $cat_emojis = [
       <input type="hidden" name="pack_qty"  id="hiddenPack">
 
       <div class="modal-actions">
-        <button type="button" class="btn-cancel" onclick="closeConfirm()">Cancel</button>
-        <button type="submit" class="btn-confirm">Yes, Place Order</button>
+        <button type="button" class="btn-cancel" onclick="closeConfirm()"><?= htmlspecialchars($t['cancel_btn']) ?></button>
+        <button type="submit" class="btn-confirm"><?= htmlspecialchars($t['confirm_btn']) ?></button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
+const PLACING_TEXT = <?= json_encode($t['placing_order']) ?>;
+
 // ---- Category accordion ----
 function toggleCategory(id) {
-  const card = document.getElementById('cat-' + id);
+  const card   = document.getElementById('cat-' + id);
   const header = card.querySelector('.category-header');
   const wasOpen = card.classList.contains('open');
   card.classList.toggle('open', !wasOpen);
@@ -302,12 +336,9 @@ function closeConfirm() {
   document.getElementById('confirmOverlay').classList.remove('show');
 }
 
-// Close modal on overlay click
 document.getElementById('confirmOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeConfirm();
 });
-
-// Close modal on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeConfirm();
 });
@@ -317,23 +348,23 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
   e.preventDefault();
   const btn = this.querySelector('.btn-confirm');
   btn.disabled = true;
-  btn.textContent = 'Placing order…';
+  btn.textContent = PLACING_TEXT;
 
   const body = new FormData(this);
   try {
     const res  = await fetch('place_order.php', { method: 'POST', body });
     const data = await res.json();
     if (data.success) {
-      window.location.href = 'order_success.php?item=' + encodeURIComponent(pendingData.name);
+      window.location.href = 'my_order.php?order_id=' + data.order_id;
     } else {
       alert('Something went wrong: ' + (data.error || 'Please try again.'));
       btn.disabled = false;
-      btn.textContent = 'Yes, Place Order';
+      btn.textContent = <?= json_encode($t['confirm_btn']) ?>;
     }
   } catch {
     alert('Network error. Please try again.');
     btn.disabled = false;
-    btn.textContent = 'Yes, Place Order';
+    btn.textContent = <?= json_encode($t['confirm_btn']) ?>;
   }
 });
 </script>

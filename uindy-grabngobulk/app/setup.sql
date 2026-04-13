@@ -211,6 +211,12 @@ INSERT INTO menu_items (category_id, name, case_cost, pack_qty) VALUES
   (11, 'Breezeberry',        60, 12),
   (11, 'Cosmic',             60, 12);
 
+-- Added to monitor if something is out of stock
+ALTER TABLE menu_items
+  ADD COLUMN is_available TINYINT(1) NOT NULL DEFAULT 1
+  COMMENT '1 = available to order, 0 = out of stock / hidden from ordering';
+
+
 -- ============================================================
 -- Example: create the first admin account
 -- Replace 'adminuser' and 'yourpassword' with real values
