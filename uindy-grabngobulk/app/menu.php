@@ -297,7 +297,8 @@ function translate_item(string $name, array $item_names, array $word_map): strin
 </div>
 
 <script>
-const PACK_OF = <?= json_encode($t['pack_of']) ?>;
+const PACK_OF      = <?= json_encode($t['pack_of']) ?>;
+const PLACING_TEXT = <?= json_encode($t['placing_order']) ?>;
 
 
 
