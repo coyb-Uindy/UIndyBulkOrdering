@@ -2,11 +2,6 @@
 // my_order.php — shows all of the current user's orders with live status polling
 session_start();
 
-// TEMPORARY — remove before final submission
-$_SESSION['user_email']      = 'test@uindy.edu';
-$_SESSION['user_first_name'] = 'Test';
-$_SESSION['user_last_name']  = 'Student';
-
 if (!isset($_SESSION['user_email'])) {
     header('Location: /');
     exit;
