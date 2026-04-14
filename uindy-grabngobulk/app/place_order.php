@@ -4,56 +4,74 @@
 session_start();
 header('Content-Type: application/json');
 
-// Must be authenticated
 if (!isset($_SESSION['user_email'])) {
-    header('Location: index.php');
+    header('Location: /');
     exit;
 }
 
 require_once 'db.php';
 
-// Server-side hours enforcement — prevents bypass even if JS is tampered with
+// Server-side hours enforcement
 if (!is_ordering_open()) {
     echo json_encode(['success' => false, 'error' => 'Ordering is currently unavailable.']);
     exit;
 }
 
-// TEMPORARY 
-$pdo->exec("INSERT IGNORE INTO users (email, first_name, last_name) 
+// TEMPORARY
+$pdo->exec("INSERT IGNORE INTO users (email, first_name, last_name)
             VALUES ('test@uindy.edu', 'Test', 'Student')");
 
-// Validate inputs
-$item_id   = filter_input(INPUT_POST, 'item_id',   FILTER_VALIDATE_INT);
-$item_name = trim($_POST['item_name'] ?? '');
-$category  = trim($_POST['category']  ?? '');
-$case_cost = filter_input(INPUT_POST, 'case_cost', FILTER_VALIDATE_FLOAT);
-$pack_qty  = filter_input(INPUT_POST, 'pack_qty',  FILTER_VALIDATE_INT);
+// Only trust item_id from POST — everything else comes from the DB.
+// This prevents any injection of custom item names, prices, or quantities.
+$item_id = filter_input(INPUT_POST, 'item_id', FILTER_VALIDATE_INT);
 
-if (!$item_id || !$item_name || !$category || $case_cost === false || !$pack_qty) {
-    echo json_encode(['success' => false, 'error' => 'Invalid order data.']);
+if (!$item_id) {
+    echo json_encode(['success' => false, 'error' => 'Invalid item.']);
     exit;
 }
 
-// Verify the item actually exists in the DB (prevents spoofing)
-$check = $pdo->prepare('SELECT id FROM menu_items WHERE id = ?');
-$check->execute([$item_id]);
-if (!$check->fetch()) {
+// Look up the real values — client-submitted name/cost/qty are discarded
+$stmt = $pdo->prepare(
+    'SELECT i.id, i.name AS item_name, i.case_cost, i.pack_qty,
+            i.is_available, c.name AS category
+     FROM menu_items i
+     JOIN categories c ON c.id = i.category_id
+     WHERE i.id = ?
+     LIMIT 1'
+);
+$stmt->execute([$item_id]);
+$item = $stmt->fetch();
+
+if (!$item) {
     echo json_encode(['success' => false, 'error' => 'Item not found.']);
     exit;
 }
 
-$email    = $_SESSION['user_email'];
-$name     = trim(($_SESSION['user_first_name'] ?? '') . ' ' . ($_SESSION['user_last_name'] ?? ''));
+if (!$item['is_available']) {
+    echo json_encode(['success' => false, 'error' => 'Item is out of stock.']);
+    exit;
+}
 
-$sql = "INSERT INTO orders (user_email, user_name, item_id, item_name, category, case_cost, pack_qty)
-        VALUES (?, ?, ?, ?, ?, ?, ?)";
-$stmt = $pdo->prepare($sql);
+$email = $_SESSION['user_email'];
+$name  = trim(($_SESSION['user_first_name'] ?? '') . ' ' . ($_SESSION['user_last_name'] ?? ''));
+
+$insert = $pdo->prepare(
+    'INSERT INTO orders (user_email, user_name, item_id, item_name, category, case_cost, pack_qty)
+     VALUES (?, ?, ?, ?, ?, ?, ?)'
+);
 
 try {
-    $stmt->execute([$email, $name, $item_id, $item_name, $category, $case_cost, $pack_qty]);
-    $new_order_id = (int) $pdo->lastInsertId();
+    $insert->execute([
+        $email,
+        $name,
+        $item['id'],
+        $item['item_name'],   // from DB, not POST
+        $item['category'],    // from DB, not POST
+        $item['case_cost'],   // from DB, not POST
+        $item['pack_qty'],    // from DB, not POST
+    ]);
 
-    // Remember this order so "My Order" in the nav can find it across page loads
+    $new_order_id = (int) $pdo->lastInsertId();
     $_SESSION['last_order_id'] = $new_order_id;
 
     echo json_encode(['success' => true, 'order_id' => $new_order_id]);
