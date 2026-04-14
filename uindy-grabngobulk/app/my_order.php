@@ -2,13 +2,8 @@
 // my_order.php — shows all of the current user's orders with live status polling
 session_start();
 
-// TEMPORARY — remove before final submission
-$_SESSION['user_email']      = 'test@uindy.edu';
-$_SESSION['user_first_name'] = 'Test';
-$_SESSION['user_last_name']  = 'Student';
-
 if (!isset($_SESSION['user_email'])) {
-    header('Location: index.php');
+    header('Location: /');
     exit;
 }
 
@@ -80,7 +75,7 @@ $pending_ids = array_map(
     <div class="status-icon status-icon--neutral" aria-hidden="true">📭</div>
     <h1><?= htmlspecialchars($t['no_orders_title']) ?></h1>
     <p><?= htmlspecialchars($t['no_orders_desc']) ?></p>
-    <a href="menu.php" class="btn-back"><?= htmlspecialchars($t['back_to_menu']) ?></a>
+    <a href="/menu" class="btn-back"><?= htmlspecialchars($t['back_to_menu']) ?></a>
   </div>
 
   <?php else: ?>
@@ -91,7 +86,7 @@ $pending_ids = array_map(
       <button class="btn-refresh-now" onclick="location.reload()">
         <?= htmlspecialchars($t['refresh_now']) ?>
       </button>
-      <a href="menu.php" class="btn-back-inline"><?= htmlspecialchars($t['back_to_menu']) ?></a>
+      <a href="/menu" class="btn-back-inline"><?= htmlspecialchars($t['back_to_menu']) ?></a>
     </div>
   </div>
 

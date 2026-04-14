@@ -2,14 +2,9 @@
 // menu.php — main ordering interface (requires SAML session)
 session_start();
 
-// TEMPORARY — remove before final submission
-$_SESSION['user_email']      = 'test@uindy.edu';
-$_SESSION['user_first_name'] = 'Test';
-$_SESSION['user_last_name']  = 'Student';
-
 // Guard: must be logged in via SAML
 if (!isset($_SESSION['user_email'])) {
-    header('Location: index.php');
+    header('Location: /');
     exit;
 }
 
@@ -113,7 +108,7 @@ function translate_item(string $name, array $item_names, array $word_map): strin
     </div>
 
     <!-- ── My Order button (outside cogwheel, always visible) ── -->
-    <a href="my_order.php<?= $active_order_id ? '?order_id=' . $active_order_id : '' ?>"
+    <a href="/my-orders<?= $active_order_id ? '?order_id=' . $active_order_id : '' ?>"
        class="my-order-btn<?= $has_active_order ? ' my-order-btn--active' : '' ?>"
        aria-label="<?= htmlspecialchars($t['my_order']) ?>">
       <?= htmlspecialchars($t['my_order']) ?>
@@ -145,7 +140,7 @@ function translate_item(string $name, array $item_names, array $word_map): strin
           <?= htmlspecialchars($t['admin_login']) ?>
         </a>
         <hr>
-        <a href="logout.php" role="menuitem">
+        <a href="/logout" role="menuitem">
           <?= htmlspecialchars($t['sign_out']) ?>
         </a>
       </div>
@@ -381,7 +376,7 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
     const res  = await fetch('place_order.php', { method: 'POST', body });
     const data = await res.json();
     if (data.success) {
-      window.location.href = 'my_order.php?order_id=' + data.order_id;
+      window.location.href = '/my-orders?order_id=' + data.order_id;
     } else {
       alert('Something went wrong: ' + (data.error || 'Please try again.'));
       btn.disabled = false;

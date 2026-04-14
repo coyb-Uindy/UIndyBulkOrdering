@@ -17,10 +17,6 @@ if (!is_ordering_open()) {
     exit;
 }
 
-// TEMPORARY
-$pdo->exec("INSERT IGNORE INTO users (email, first_name, last_name)
-            VALUES ('test@uindy.edu', 'Test', 'Student')");
-
 // Only trust item_id from POST — everything else comes from the DB.
 // This prevents any injection of custom item names, prices, or quantities.
 $item_id = filter_input(INPUT_POST, 'item_id', FILTER_VALIDATE_INT);
