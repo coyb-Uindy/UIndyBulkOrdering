@@ -1,21 +1,21 @@
 <?php
-// auth/login.php
-// Initiates SAML authentication and stores user info in $_SESSION.
+// auth/login.php — initiates SAML login and stores user in PHP session
 
-session_start();
 require_once __DIR__ . '/../auth/saml.php';
 require_once __DIR__ . '/../db.php';
 
-// saml_require_auth() redirects to UIndy SSO if not logged in,
-// and returns once the assertion is received.
+// Do NOT call session_start() before saml_require_auth().
+// SimpleSAMLphp manages its own session during the SAML redirect flow.
+// Starting PHP's session here conflicts with it and causes redirect loops.
 $user = saml_require_auth();
 
-// Persist to session
+// Auth complete — now safe to start our app session
+session_start();
 $_SESSION['user_email']      = $user['email'];
 $_SESSION['user_first_name'] = $user['first_name'];
 $_SESSION['user_last_name']  = $user['last_name'];
 
-// Upsert user record so we have a foreign key for orders
+// Upsert user record so orders have a valid foreign key
 $sql = "INSERT INTO users (email, first_name, last_name)
         VALUES (?, ?, ?)
         ON DUPLICATE KEY UPDATE
@@ -25,5 +25,5 @@ $sql = "INSERT INTO users (email, first_name, last_name)
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$user['email'], $user['first_name'], $user['last_name']]);
 
-header('Location: ../menu.php');
+header('Location: /menu');
 exit;
