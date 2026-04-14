@@ -35,8 +35,8 @@ $config = [
     'session.cookie.name' => 'SimpleSAMLSessionID',
     'session.cookie.lifetime' => 0,
     'session.cookie.path' => '/',
-    'session.cookie.secure' => false,
-    'session.cookie.samesite' => 'Lax',
+    'session.cookie.secure' => true,
+    'session.cookie.samesite' => 'none',
 
     'enable.saml20-idp' => false,
 
