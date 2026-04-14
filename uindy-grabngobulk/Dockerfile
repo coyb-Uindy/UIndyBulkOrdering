@@ -34,7 +34,6 @@ RUN mkdir -p /var/simplesamlphp/log \
     && mkdir -p /var/simplesamlphp/cert \
     && mkdir -p /tmp/simplesaml
 
-COPY fix_proxy.php /var/www/fix_proxy.php
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
 COPY simplesaml-config/saml20-idp-remote.php /var/simplesamlphp/metadata/saml20-idp-remote.php
