@@ -13,6 +13,6 @@ if (file_exists($saml_lib)) {
     saml_logout('/');   // redirects to index.php after IdP logout
 } else {
     // SAML not configured yet — plain redirect to landing page
-    header('Location: index.php');
+    header('Location: /');
     exit;
 }

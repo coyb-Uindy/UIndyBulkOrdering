@@ -12,7 +12,7 @@ if (!in_array($lang, $allowed, true)) {
 $_SESSION['lang'] = $lang;
 
 // Redirect back to wherever they came from, defaulting to menu
-$back = $_SERVER['HTTP_REFERER'] ?? 'menu.php';
+$back = $_SERVER['HTTP_REFERER'] ?? '/menu';
 
 // Safety: only redirect to same-origin paths
 $back = filter_var($back, FILTER_VALIDATE_URL) ? $back : 'menu.php';

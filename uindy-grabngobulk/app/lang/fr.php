@@ -7,7 +7,7 @@ return [
     'language'          => '🌐 Langue',
     'admin_login'       => '🔐 Connexion Admin',
     'sign_out'          => '🚪 Déconnexion',
-    'my_order'          => '📦 Ma Commande',
+    'my_order'          => 'Mes Commandes',
 
     // ── Hero ────────────────────────────────────────────────
     'hero_title'        => 'Pré-commande de Boissons en Vrac',
@@ -45,7 +45,7 @@ return [
 
     'status_pending_title'  => 'En Cours de Préparation',
     'status_pending_badge'  => '⏳ En attente',
-    'status_complete_title' => 'Prête à Récupérer ! 🎉',
+    'status_complete_title' => 'Prête à Récupérer !',
     'status_complete_badge' => '✅ Complète',
     'status_complete_msg'   => 'Rendez-vous au Grab-N-Go — votre commande est prête et vous attend !',
     'status_denied_title'   => 'Commande Indisponible',

@@ -1,0 +1,36 @@
+Options -Indexes
+RewriteEngine On
+
+# ── Let SimpleSAMLphp handle its own path ──────────────────
+RewriteRule ^simplesaml/(.*)$ /simplesaml/$1 [L]
+
+# ── Internal endpoints: block browser-bar access entirely ──
+# These are AJAX-only; redirect to root if accessed directly
+RewriteRule ^place_order\.php$       index.php [R=302,L]
+RewriteRule ^order_status\.php$      index.php [R=302,L]
+RewriteRule ^set_lang\.php$          - [L]
+RewriteRule ^clear_orders\.php$      index.php [R=302,L]
+
+# ── Clean URL rewrites (strip .php from visible URL) ───────
+# Externally:  /menu          →  internally: menu.php
+# Externally:  /my-orders     →  internally: my_order.php
+# Externally:  /order-status  →  internally: my_order.php  (alias)
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^menu$          menu.php        [L]
+RewriteRule ^my-orders$     my_order.php    [L]
+RewriteRule ^login$         auth/login.php  [L]
+RewriteRule ^logout$        logout.php      [L]
+
+# ── Block direct .php access (redirect to clean URL or root) ─
+RewriteCond %{THE_REQUEST} \.php[\ ?]
+RewriteRule ^menu\.php$         /menu        [R=301,L]
+RewriteRule ^my_order\.php$     /my-orders   [R=301,L]
+RewriteRule ^auth/login\.php$   /login       [R=301,L]
+RewriteRule ^logout\.php$       /logout      [R=301,L]
+
+# Any other .php file accessed directly → redirect to root
+RewriteCond %{THE_REQUEST} \.php[\ ?]
+RewriteRule ^(?!index\.php).*\.php$ / [R=302,L]

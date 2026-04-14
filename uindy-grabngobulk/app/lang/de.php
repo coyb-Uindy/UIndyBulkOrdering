@@ -6,7 +6,7 @@ return [
     'language'          => '🌐 Sprache',
     'admin_login'       => '🔐 Admin-Anmeldung',
     'sign_out'          => '🚪 Abmelden',
-    'my_order'          => '📦 Meine Bestellung',
+    'my_order'          => 'Meine Bestellungen',
 
     'hero_title'        => 'Getränke-Vorbestellung',
     'hero_desc'         => 'Wählen Sie eine Kiste aus und Ihre Bestellung ist fertig, bevor Sie ankommen. Ermäßigungen der Mensa gelten für berechtigte Großbestellungen.',
@@ -39,7 +39,7 @@ return [
     'orders_heading'        => 'Ihre Bestellungen',
     'status_pending_title'  => 'Wird vorbereitet',
     'status_pending_badge'  => '⏳ Ausstehend',
-    'status_complete_title' => 'Abholbereit! 🎉',
+    'status_complete_title' => 'Abholbereit!',
     'status_complete_badge' => '✅ Fertig',
     'status_complete_msg'   => 'Gehen Sie zum Grab-N-Go — Ihre Bestellung ist fertig und wartet auf Sie.',
     'status_denied_title'   => 'Bestellung nicht verfügbar',

@@ -6,7 +6,7 @@ return [
     'language'          => '🌐 Idioma',
     'admin_login'       => '🔐 Acceso Admin',
     'sign_out'          => '🚪 Cerrar Sesión',
-    'my_order'          => '📦 Mi Pedido',
+    'my_order'          => 'Mis Pedidos',
 
     'hero_title'        => 'Pre-pedido Masivo de Bebidas',
     'hero_desc'         => 'Seleccione una caja y su pedido estará listo en el Grab-N-Go antes de que llegue — Se aplican descuentos de comedor para pedidos masivos elegibles.',
@@ -39,7 +39,7 @@ return [
     'orders_heading'        => 'Sus Pedidos',
     'status_pending_title'  => 'En Preparación',
     'status_pending_badge'  => '⏳ En espera',
-    'status_complete_title' => '¡Listo para Recoger! 🎉',
+    'status_complete_title' => '¡Listo para Recoger!',
     'status_complete_badge' => '✅ Completo',
     'status_complete_msg'   => 'Diríjase al Grab-N-Go — su pedido está listo y esperándole.',
     'status_denied_title'   => 'Pedido No Disponible',

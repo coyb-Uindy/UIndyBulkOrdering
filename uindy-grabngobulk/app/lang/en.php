@@ -7,7 +7,7 @@ return [
     'language'          => '🌐 Language',
     'admin_login'       => '🔐 Admin Login',
     'sign_out'          => '🚪 Sign Out',
-    'my_order'          => '📦 My Order',
+    'my_order'          => 'My Orders',
 
     // ── Hero ────────────────────────────────────────────────
     'hero_title'        => 'Bulk Beverage Pre-Order',
@@ -45,7 +45,7 @@ return [
 
     'status_pending_title'  => 'Being Prepared',
     'status_pending_badge'  => '⏳ Awaiting Staff',
-    'status_complete_title' => 'Ready for Pickup! 🎉',
+    'status_complete_title' => 'Ready for Pickup!',
     'status_complete_badge' => '✅ Complete',
     'status_complete_msg'   => 'Head to the Grab-N-Go — your order is packed and waiting for you!',
     'status_denied_title'   => 'Order Unavailable',
