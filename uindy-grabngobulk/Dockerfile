@@ -36,6 +36,7 @@ RUN mkdir -p /var/simplesamlphp/log \
  
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
+COPY simplesaml-config/saml20-idp-remote.php /var/simplesamlphp/metadata/saml20-idp-remote.php
  
 RUN chown -R www-data:www-data /var/www/html \
     && chown -R www-data:www-data /var/simplesamlphp \
