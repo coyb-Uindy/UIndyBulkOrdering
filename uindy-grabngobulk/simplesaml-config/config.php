@@ -13,15 +13,15 @@ $config = [
     'auth.adminpassword' => 'GrabNGoAdmin2026!',
 
     'admin.protectindexpage' => true,
-    'admin.protectmetadata' => false,
+    'admin.protectmetadata' => true,
 
     'debug' => [
-        'saml' => true,
+        'saml' => false,
         'backtraces' => true,
         'validatexml' => false,
     ],
 
-    'showerrors' => true,
+    'showerrors' => false,
 
     'logging.level' => 3,
     'logging.handler' => 'file',
@@ -35,8 +35,8 @@ $config = [
     'session.cookie.name' => 'SimpleSAMLSessionID',
     'session.cookie.lifetime' => 0,
     'session.cookie.path' => '/',
-    'session.cookie.secure' => true,
-    'session.cookie.samesite' => 'None',
+    'session.cookie.secure' => false,
+    'session.cookie.samesite' => 'Lax',
 
     'enable.saml20-idp' => false,
 
