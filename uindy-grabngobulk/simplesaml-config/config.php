@@ -16,12 +16,12 @@ $config = [
     'admin.protectmetadata' => true,
 
     'debug' => [
-        'saml' => false,
+        'saml' => true,
         'backtraces' => true,
         'validatexml' => false,
     ],
 
-    'showerrors' => false,
+    'showerrors' => true,
 
     'logging.level' => 3,
     'logging.handler' => 'file',
