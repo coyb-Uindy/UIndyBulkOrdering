@@ -7,9 +7,9 @@ $config = [
     'tempdir' => '/tmp/simplesaml',
 
     'technicalcontact_name' => 'Blake Coy',
-    'technicalcontact_email' => 'your@uindy.edu',
+    'technicalcontact_email' => 'coyb@uindy.edu',
 
-    'secretsalt' => 'uindygrabngobulkorderingsalt2026',
+    'secretsalt' => 'sS45ihYwkmLTBvlXFfc78fWJ06OwPJoaKWxnyOeGd7A=',
     'auth.adminpassword' => 'GrabNGoAdmin2026!',
 
     'admin.protectindexpage' => true,
@@ -21,7 +21,7 @@ $config = [
         'validatexml' => false,
     ],
 
-    'showerrors' => true,
+    'showerrors' => false,
 
     'logging.level' => 3,
     'logging.handler' => 'file',

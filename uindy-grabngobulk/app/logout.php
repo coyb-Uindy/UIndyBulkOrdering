@@ -6,7 +6,7 @@ session_destroy();
 
 // Only attempt SAML/IdP logout if SimpleSAMLphp is actually installed.
 // While SAML is not yet configured, skip it and redirect directly.
-$saml_lib = '/var/www/html/simplesamlphp/lib/_autoload.php';
+$saml_lib = '/var/simplesamlphp/vendor/autoload.php';
 
 if (file_exists($saml_lib)) {
     require_once __DIR__ . '/auth/saml.php';
