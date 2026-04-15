@@ -18,17 +18,12 @@ if ($pause === null || $pause === false) {
 $pause = $pause ? 1 : 0;
 
 try {
-    $pdo->exec("CREATE TABLE IF NOT EXISTS settings (
-        \`key\`   VARCHAR(100) NOT NULL PRIMARY KEY,
-        \`value\` VARCHAR(255) NOT NULL DEFAULT ''
-    )");
-
     $stmt = $pdo->prepare(
-        "INSERT INTO settings (\`key\`, \`value\`) VALUES ('ordering_paused', ?)
-         ON DUPLICATE KEY UPDATE \`value\` = VALUES(\`value\`)"
+        "INSERT INTO settings (setting_key, setting_value) VALUES ('ordering_paused', ?)
+         ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)"
     );
     $stmt->execute([$pause]);
     echo json_encode(['success' => true, 'paused' => $pause]);
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'error' => 'Database error.']);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

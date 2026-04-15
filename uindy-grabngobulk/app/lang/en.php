@@ -11,7 +11,7 @@ return [
 
     // ── Hero ────────────────────────────────────────────────
     'hero_title'        => 'Bulk Beverage Pre-Order',
-    'hero_desc'         => 'Select a case below and your order will be ready at the Grab-N-Go before you arrive. Dining-approved discounts apply for eligible bulk orders.',
+    'hero_desc'         => 'Select a case below and your order will be ready at the Grab-N-Go before you arrive. Ordering through this program gives you 10% off all bulk beverages.',
 
     // ── Menu ────────────────────────────────────────────────
     'section_label'     => 'Available Beverages',
@@ -30,7 +30,9 @@ return [
     'case_cost'         => 'Case Cost',
     'pack_amount'       => 'Pack Amount',
     'category_label'    => 'Category',
-    'discount_coming'   => '✨ Dining discount & discounted total — coming soon',
+    'ten_pct_off'       => '10% off',
+    'ordering_paused'       => '⏸️ Ordering is temporarily paused.',
+    'ordering_paused_desc'  => 'Staff have temporarily paused new orders. Please check back soon.',
     'cancel_btn'        => 'Cancel',
     'confirm_btn'       => 'Yes, Place Order',
     'placing_order'     => 'Placing order…',

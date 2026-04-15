@@ -9,7 +9,7 @@ return [
     'my_order'          => 'Meine Bestellungen',
 
     'hero_title'        => 'Getränke-Vorbestellung',
-    'hero_desc'         => 'Wählen Sie eine Kiste aus und Ihre Bestellung ist fertig, bevor Sie ankommen. Ermäßigungen der Mensa gelten für berechtigte Großbestellungen.',
+    'hero_desc'         => 'Wählen Sie eine Kiste aus und Ihre Bestellung ist fertig, bevor Sie ankommen. Bestellungen über dieses Programm geben Ihnen 10% Rabatt auf alle Großbestellungen.',
 
     'section_label'     => 'Verfügbare Getränke',
     'order_btn'         => 'Bestellen',
@@ -23,7 +23,9 @@ return [
     'case_cost'         => 'Kistenpreis',
     'pack_amount'       => 'Packungsmenge',
     'category_label'    => 'Kategorie',
-    'discount_coming'   => '✨ Mensa-Rabatt und reduzierter Gesamtpreis — demnächst verfügbar',
+    'ten_pct_off'       => '10% Rabatt',
+    'ordering_paused'       => '⏸️ Bestellungen sind vorübergehend pausiert.',
+    'ordering_paused_desc'  => 'Das Personal hat neue Bestellungen vorübergehend pausiert. Bitte versuchen Sie es bald erneut.',
     'cancel_btn'        => 'Abbrechen',
     'confirm_btn'       => 'Ja, Bestellung aufgeben',
     'placing_order'     => 'Bestellung wird aufgegeben…',

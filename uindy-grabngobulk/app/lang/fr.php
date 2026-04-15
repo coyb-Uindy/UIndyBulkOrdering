@@ -11,7 +11,7 @@ return [
 
     // ── Hero ────────────────────────────────────────────────
     'hero_title'        => 'Pré-commande de Boissons en Vrac',
-    'hero_desc'         => 'Sélectionnez une caisse ci-dessous et votre commande sera prête au Grab-N-Go avant votre arrivée. Des rabais approuvés par la restauration s\'appliquent aux commandes éligibles.',
+    'hero_desc'         => 'Sélectionnez une caisse ci-dessous et votre commande sera prête au Grab-N-Go avant votre arrivée. Commander via ce programme vous donne 10% de réduction sur toutes les boissons en vrac.',
 
     // ── Menu ────────────────────────────────────────────────
     'section_label'     => 'Boissons Disponibles',
@@ -31,7 +31,9 @@ return [
     'case_cost'         => 'Coût de la Caisse',
     'pack_amount'       => 'Quantité par Paquet',
     'category_label'    => 'Catégorie',
-    'discount_coming'   => '✨ Réduction restauration et total réduit — bientôt disponible',
+    'ten_pct_off'       => '10% de réduction',
+    'ordering_paused'       => '⏸️ Les commandes sont temporairement suspendues.',
+    'ordering_paused_desc'  => 'Le personnel a temporairement suspendu les nouvelles commandes. Veuillez réessayer bientôt.',
     'cancel_btn'        => 'Annuler',
     'confirm_btn'       => 'Oui, Passer la Commande',
     'placing_order'     => 'Commande en cours…',

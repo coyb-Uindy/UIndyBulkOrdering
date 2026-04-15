@@ -9,7 +9,7 @@ return [
     'my_order'          => 'Mis Pedidos',
 
     'hero_title'        => 'Pre-pedido Masivo de Bebidas',
-    'hero_desc'         => 'Seleccione una caja y su pedido estará listo en el Grab-N-Go antes de que llegue — Se aplican descuentos de comedor para pedidos masivos elegibles.',
+    'hero_desc'         => 'Seleccione una caja y su pedido estará listo en el Grab-N-Go antes de que llegue. Pedir a través de este programa le da un 10% de descuento en todas las bebidas al por mayor.',
 
     'section_label'     => 'Bebidas Disponibles',
     'order_btn'         => 'Pedir',
@@ -23,7 +23,9 @@ return [
     'case_cost'         => 'Costo por Caja',
     'pack_amount'       => 'Cantidad por Paquete',
     'category_label'    => 'Categoría',
-    'discount_coming'   => '✨ Descuento de comedor y total reducido — próximamente',
+    'ten_pct_off'       => '10% de descuento',
+    'ordering_paused'       => '⏸️ Los pedidos están temporalmente pausados.',
+    'ordering_paused_desc'  => 'El personal ha pausado temporalmente los nuevos pedidos. Por favor, vuelva pronto.',
     'cancel_btn'        => 'Cancelar',
     'confirm_btn'       => 'Sí, Hacer Pedido',
     'placing_order'     => 'Enviando pedido…',

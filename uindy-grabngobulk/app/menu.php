@@ -242,7 +242,7 @@ function translate_item(string $name, array $item_names, array $word_map): strin
             </div>
 
             <div class="item-cost">
-              <span class="item-cost__original">$<?= number_format(original_price($item['case_cost']), 2) ?></span>
+              <span class="item-cost__original">$<?= floor(original_price($item['case_cost'])) ?></span>
               <span class="item-cost__discounted">$<?= number_format($item['case_cost'], 2) ?></span>
             </div>
 
@@ -261,8 +261,8 @@ function translate_item(string $name, array $item_names, array $word_map): strin
                       aria-label="<?= htmlspecialchars($t['order_btn']) ?> <?= htmlspecialchars($item['name']) ?>"
                       onclick="openConfirm(
                         <?= $item['id'] ?>,
-                        '<?= addslashes(htmlspecialchars($item['name'])) ?>',
-                        '<?= addslashes(htmlspecialchars($cat['name'])) ?>',
+                        '<?= addslashes(htmlspecialchars($display_item)) ?>',
+                        '<?= addslashes(htmlspecialchars($display_cat)) ?>',
                         <?= $item['case_cost'] ?>,
                         <?= $item['pack_qty'] ?>
                       )">
@@ -294,7 +294,7 @@ function translate_item(string $name, array $item_names, array $word_map): strin
         <div>
           <span class="modal-cost-original" id="modalCostOriginal">—</span>
           <strong id="modalCost">—</strong>
-          <span class="modal-discount-badge">10% Dining Discount</span>
+          <span class="modal-discount-badge"><?= htmlspecialchars($t['ten_pct_off'] ?? '10% off') ?></span>
         </div>
       </div>
       <div class="detail-row">
@@ -357,7 +357,7 @@ let pendingData = {};
 function openConfirm(id, name, category, cost, pack) {
   pendingData = { id, name, category, cost, pack };
   document.getElementById('modalItemName').textContent     = name;
-  document.getElementById('modalCostOriginal').textContent = '$' + (parseFloat(cost) / 0.9).toFixed(2);
+  document.getElementById('modalCostOriginal').textContent = '$' + Math.floor(parseFloat(cost) / 0.9);
   document.getElementById('modalCost').textContent         = '$' + parseFloat(cost).toFixed(2);
   document.getElementById('modalPack').textContent         = PACK_OF + ' ' + pack;
   document.getElementById('modalCat').textContent      = category;
