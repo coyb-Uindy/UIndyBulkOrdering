@@ -97,21 +97,21 @@ $oos_count   = count(array_filter($rows, fn($r) => !$r['is_available']));
 
   <div class="dash-header">
     <div>
-      <h1>🗂️ Inventory Management</h1>
+      <h1>Inventory Management</h1>
       <div class="dash-meta">
         Logged in as <strong><?= $admin ?></strong>
       </div>
     </div>
     <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
-      <a class="btn-logout" href="dashboard.php">📋 Order Monitor</a>
-      <a class="btn-logout" href="logout.php">Sign Out</a>
+      <a class="btn-logout" href="dashboard.php">Order Monitor</a>
+      <a class="btn-logout" href="/logout">Sign Out</a>
     </div>
   </div>
 
   <!-- Quick stats -->
   <div class="dash-stats" style="display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
-    <div class="stat-pill">📦 <?= $total_items ?> total item<?= $total_items !== 1 ? 's' : '' ?></div>
-    <div class="stat-pill">🚫 <?= $oos_count ?> out of stock</div>
+    <div class="stat-pill"><?= $total_items ?> total item<?= $total_items !== 1 ? 's' : '' ?></div>
+    <div class="stat-pill"><?= $oos_count ?> out of stock</div>
   </div>
 
   <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.25rem;">
@@ -149,7 +149,7 @@ $oos_count   = count(array_filter($rows, fn($r) => !$r['is_available']));
             <?php if ($avail): ?>
               <span style="color:#15803d;font-weight:600;font-size:.8rem;">✅ Available</span>
             <?php else: ?>
-              <span style="color:#b91c1c;font-weight:600;font-size:.8rem;">🚫 Out of Stock</span>
+              <span style="color:#b91c1c;font-weight:600;font-size:.8rem;">Out of Stock</span>
             <?php endif; ?>
           </td>
           <td>

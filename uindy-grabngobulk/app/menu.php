@@ -288,13 +288,13 @@ function translate_item(string $name, array $item_names, array $word_map): strin
     <p class="modal-subtitle"><?= htmlspecialchars($t['modal_subtitle']) ?></p>
 
     <div class="modal-item-card">
-      <div class="modal-item-header">
-        <div class="item-title" id="modalItemName">—</div>
-        <span class="modal-discount-badge"><?= htmlspecialchars($t['ten_pct_off'] ?? '10% off') ?></span>
-      </div>
+      <div class="item-title" id="modalItemName">—</div>
       <div class="detail-row">
         <span><?= htmlspecialchars($t['discounted_case_cost'] ?? 'Discounted Case Cost') ?></span>
-        <strong id="modalCost">—</strong>
+        <div style="display:flex;align-items:center;gap:.5rem;">
+          <span class="modal-discount-badge"><?= htmlspecialchars($t['ten_pct_off'] ?? '10% off') ?></span>
+          <strong id="modalCost">—</strong>
+        </div>
       </div>
       <div class="detail-row">
         <span><?= htmlspecialchars($t['pack_amount']) ?></span>

@@ -63,6 +63,7 @@ $pending_ids = array_map(
   <div class="topnav__right">
     <div class="topnav__user">
       <strong><?= $first_name ?></strong>
+      <span><?= htmlspecialchars($email) ?></span>
     </div>
   </div>
 </nav>
