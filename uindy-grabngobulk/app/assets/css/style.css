@@ -1000,10 +1000,10 @@ body {
 }
 
 /* ── Discount pricing ────────────────────────────────────── */
-.item-cost__original {
-  font-size: .75rem;
+.item-cost__label {
+  font-size: .72rem;
   color: var(--muted);
-  text-decoration: line-through;
+  font-weight: 400;
 }
 .item-cost__discounted {
   font-weight: 700;
@@ -1012,24 +1012,8 @@ body {
   white-space: nowrap;
 }
 
-/* Modal original price */
-.modal-cost-original {
-  font-size: .8rem;
-  color: var(--muted);
-  text-decoration: line-through;
-  margin-right: .4rem;
-}
-.modal-discount-badge {
-  display: inline-block;
-  background: #dcfce7;
-  color: #15803d;
-  font-size: .68rem;
-  font-weight: 700;
-  padding: .15rem .5rem;
-  border-radius: 999px;
-  margin-left: .4rem;
-  vertical-align: middle;
-}
+/* Modal original price — no longer used */
+.modal-cost-original { display: none; }
 
 /* ── Admin pause ordering buttons ───────────────────────── */
 .btn-ordering-pause {
@@ -1038,16 +1022,15 @@ body {
   gap: .4rem;
   background: rgba(255,255,255,.15);
   color: #fff;
-  border: 1.5px solid #fcd34d;
+  border: 1px solid rgba(255,255,255,.35);
   border-radius: 8px;
   padding: .4rem .85rem;
   font-size: .82rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
-  text-decoration: none;
 }
-.btn-ordering-pause:hover { background: rgba(252,211,77,.25); }
+.btn-ordering-pause:hover { background: rgba(255,255,255,.25); }
 
 .btn-ordering-paused {
   display: inline-flex;
@@ -1055,16 +1038,37 @@ body {
   gap: .4rem;
   background: rgba(255,255,255,.15);
   color: #fff;
-  border: 1.5px solid #86efac;
+  border: 1px solid rgba(255,255,255,.35);
   border-radius: 8px;
   padding: .4rem .85rem;
   font-size: .82rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
-  text-decoration: none;
 }
-.btn-ordering-paused:hover { background: rgba(134,239,172,.25); }
+.btn-ordering-paused:hover { background: rgba(255,255,255,.25); }
+
+/* Modal item header — name + discount badge on same row */
+.modal-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  margin-bottom: .5rem;
+}
+.modal-item-header .item-title { margin-bottom: 0; }
+
+.modal-discount-badge {
+  display: inline-block;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: .2rem .6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
 /* Admin paused banner */
 .ordering-paused-banner {
@@ -1073,13 +1077,11 @@ body {
   border-radius: var(--radius);
   padding: .85rem 1.1rem;
   margin-bottom: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: .25rem;
+  text-align: center;
   color: #92400e;
-  font-size: .88rem;
+  font-size: .95rem;
+  font-weight: 600;
 }
-.ordering-paused-banner strong { font-size: .95rem; }
 
 /* Menu paused banner variant */
 .closed-banner--paused {

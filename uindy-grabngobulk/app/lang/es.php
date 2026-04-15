@@ -4,11 +4,11 @@ return [
     'nav_title'         => 'Pedido Masivo Grab-N-Go',
     'nav_subtitle'      => 'Universidad de Indianapolis',
     'language'          => '🌐 Idioma',
-    'admin_login'       => '🔐 Acceso Admin',
-    'sign_out'          => '🚪 Cerrar Sesión',
+    'admin_login'       => 'Acceso Admin',
+    'sign_out'          => 'Cerrar Sesión',
     'my_order'          => 'Mis Pedidos',
 
-    'hero_title'        => 'Pre-pedido Masivo de Bebidas',
+    'hero_title'        => 'Pre-pedido Masivo',
     'hero_desc'         => 'Seleccione una caja y su pedido estará listo en el Grab-N-Go antes de que llegue. Pedir a través de este programa le da un 10% de descuento en todas las bebidas al por mayor.',
 
     'section_label'     => 'Bebidas Disponibles',
@@ -23,7 +23,10 @@ return [
     'case_cost'         => 'Costo por Caja',
     'pack_amount'       => 'Cantidad por Paquete',
     'category_label'    => 'Categoría',
-    'ten_pct_off'       => '10% de descuento',
+    'ten_pct_off'           => '10% de descuento',
+    'discounted_cost'       => 'Precio con Descuento',
+    'discounted_case_cost'  => 'Precio con Descuento por Caja',
+    'discount_label'        => 'Descuento',
     'ordering_paused'       => '⏸️ Los pedidos están temporalmente pausados.',
     'ordering_paused_desc'  => 'El personal ha pausado temporalmente los nuevos pedidos. Por favor, vuelva pronto.',
     'cancel_btn'        => 'Cancelar',
@@ -48,7 +51,7 @@ return [
     'status_denied_badge'   => '❌ Denegado',
     'status_denied_msg'     => 'Su pedido fue denegado — el artículo puede estar agotado. Por favor vuelva al menú para elegir otro artículo.',
     'back_to_menu'          => '← Volver al Menú',
-    'refresh_now'           => '🔄 Actualizar',
+    'refresh_now'           => 'Actualizar',
     'auto_refresh_note'     => 'Se actualiza cada 30 segundos.',
 
     'cat_names' => [

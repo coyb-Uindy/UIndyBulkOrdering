@@ -4,11 +4,11 @@ return [
     'nav_title'         => 'Grab-N-Go Großbestellung',
     'nav_subtitle'      => 'Universität von Indianapolis',
     'language'          => '🌐 Sprache',
-    'admin_login'       => '🔐 Admin-Anmeldung',
-    'sign_out'          => '🚪 Abmelden',
+    'admin_login'       => 'Admin-Anmeldung',
+    'sign_out'          => 'Abmelden',
     'my_order'          => 'Meine Bestellungen',
 
-    'hero_title'        => 'Getränke-Vorbestellung',
+    'hero_title'        => 'Vorbestellung',
     'hero_desc'         => 'Wählen Sie eine Kiste aus und Ihre Bestellung ist fertig, bevor Sie ankommen. Bestellungen über dieses Programm geben Ihnen 10% Rabatt auf alle Großbestellungen.',
 
     'section_label'     => 'Verfügbare Getränke',
@@ -23,7 +23,10 @@ return [
     'case_cost'         => 'Kistenpreis',
     'pack_amount'       => 'Packungsmenge',
     'category_label'    => 'Kategorie',
-    'ten_pct_off'       => '10% Rabatt',
+    'ten_pct_off'           => '10% Rabatt',
+    'discounted_cost'       => 'Rabattpreis',
+    'discounted_case_cost'  => 'Rabattpreis pro Kiste',
+    'discount_label'        => 'Rabatt',
     'ordering_paused'       => '⏸️ Bestellungen sind vorübergehend pausiert.',
     'ordering_paused_desc'  => 'Das Personal hat neue Bestellungen vorübergehend pausiert. Bitte versuchen Sie es bald erneut.',
     'cancel_btn'        => 'Abbrechen',
@@ -48,7 +51,7 @@ return [
     'status_denied_badge'   => '❌ Abgelehnt',
     'status_denied_msg'     => 'Ihre Bestellung wurde leider abgelehnt — der Artikel ist möglicherweise nicht vorrätig. Bitte kehren Sie zum Menü zurück und wählen Sie einen anderen Artikel.',
     'back_to_menu'          => '← Zurück zum Menü',
-    'refresh_now'           => '🔄 Aktualisieren',
+    'refresh_now'           => 'Aktualisieren',
     'auto_refresh_note'     => 'Aktualisierung alle 30 Sekunden.',
 
     'cat_names' => [

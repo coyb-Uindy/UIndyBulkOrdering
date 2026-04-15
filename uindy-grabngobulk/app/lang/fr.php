@@ -5,12 +5,12 @@ return [
     'nav_title'         => 'Commande en Vrac Grab-N-Go',
     'nav_subtitle'      => 'Université d\'Indianapolis',
     'language'          => '🌐 Langue',
-    'admin_login'       => '🔐 Connexion Admin',
-    'sign_out'          => '🚪 Déconnexion',
+    'admin_login'       => 'Connexion Admin',
+    'sign_out'          => 'Déconnexion',
     'my_order'          => 'Mes Commandes',
 
     // ── Hero ────────────────────────────────────────────────
-    'hero_title'        => 'Pré-commande de Boissons en Vrac',
+    'hero_title'        => 'Pré-commande en Vrac',
     'hero_desc'         => 'Sélectionnez une caisse ci-dessous et votre commande sera prête au Grab-N-Go avant votre arrivée. Commander via ce programme vous donne 10% de réduction sur toutes les boissons en vrac.',
 
     // ── Menu ────────────────────────────────────────────────
@@ -31,7 +31,10 @@ return [
     'case_cost'         => 'Coût de la Caisse',
     'pack_amount'       => 'Quantité par Paquet',
     'category_label'    => 'Catégorie',
-    'ten_pct_off'       => '10% de réduction',
+    'ten_pct_off'           => '10% de réduction',
+    'discounted_cost'       => 'Prix réduit',
+    'discounted_case_cost'  => 'Prix réduit de la caisse',
+    'discount_label'        => 'Réduction',
     'ordering_paused'       => '⏸️ Les commandes sont temporairement suspendues.',
     'ordering_paused_desc'  => 'Le personnel a temporairement suspendu les nouvelles commandes. Veuillez réessayer bientôt.',
     'cancel_btn'        => 'Annuler',
@@ -55,7 +58,7 @@ return [
     'status_denied_msg'     => 'Votre commande a malheureusement été refusée — l\'article peut être en rupture de stock. Retournez au menu pour choisir un autre article.',
 
     'back_to_menu'          => '← Retour au Menu',
-    'refresh_now'           => '🔄 Actualiser',
+    'refresh_now'           => 'Actualiser',
     'auto_refresh_note'     => 'Mise à jour toutes les 30 secondes.',
 
     // ── Category names ──────────────────────────────────────

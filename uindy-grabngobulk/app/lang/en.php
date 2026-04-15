@@ -5,13 +5,13 @@ return [
     'nav_title'         => 'Grab-N-Go Bulk Order',
     'nav_subtitle'      => 'University of Indianapolis',
     'language'          => '🌐 Language',
-    'admin_login'       => '🔐 Admin Login',
-    'sign_out'          => '🚪 Sign Out',
+    'admin_login'       => 'Admin Login',
+    'sign_out'          => 'Sign Out',
     'my_order'          => 'My Orders',
 
     // ── Hero ────────────────────────────────────────────────
-    'hero_title'        => 'Bulk Beverage Pre-Order',
-    'hero_desc'         => 'Select a case below and your order will be ready at the Grab-N-Go before you arrive. Ordering through this program gives you 10% off all bulk beverages.',
+    'hero_title'        => 'Bulk Pre-Ordering',
+    'hero_desc'         => 'Select a case below and your order will be ready at the Grab-N-Go before you arrive. Earn 10% off all available bulk orders by ordering in advance!',
 
     // ── Menu ────────────────────────────────────────────────
     'section_label'     => 'Available Beverages',
@@ -30,7 +30,10 @@ return [
     'case_cost'         => 'Case Cost',
     'pack_amount'       => 'Pack Amount',
     'category_label'    => 'Category',
-    'ten_pct_off'       => '10% off',
+    'ten_pct_off'           => '10% off',
+    'discounted_cost'       => 'Discounted Cost',
+    'discounted_case_cost'  => 'Discounted Case Cost',
+    'discount_label'        => 'Discount',
     'ordering_paused'       => '⏸️ Ordering is temporarily paused.',
     'ordering_paused_desc'  => 'Staff have temporarily paused new orders. Please check back soon.',
     'cancel_btn'        => 'Cancel',
@@ -55,7 +58,7 @@ return [
     'status_denied_msg'     => 'Your order was unfortunately denied — the item may be out of stock. Please return to the menu to choose another item.',
 
     'back_to_menu'          => '← Back to Menu',
-    'refresh_now'           => '🔄 Refresh',
+    'refresh_now'           => 'Refresh',
     'auto_refresh_note'     => 'Updates every 30 seconds.',
 
     // ── Category names (from DB) ────────────────────────────

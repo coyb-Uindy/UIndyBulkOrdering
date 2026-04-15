@@ -242,7 +242,7 @@ function translate_item(string $name, array $item_names, array $word_map): strin
             </div>
 
             <div class="item-cost">
-              <span class="item-cost__original">$<?= floor(original_price($item['case_cost'])) ?></span>
+              <span class="item-cost__label"><?= htmlspecialchars($t['discounted_cost'] ?? 'Discounted Cost') ?>:</span>
               <span class="item-cost__discounted">$<?= number_format($item['case_cost'], 2) ?></span>
             </div>
 
@@ -288,14 +288,13 @@ function translate_item(string $name, array $item_names, array $word_map): strin
     <p class="modal-subtitle"><?= htmlspecialchars($t['modal_subtitle']) ?></p>
 
     <div class="modal-item-card">
-      <div class="item-title" id="modalItemName">—</div>
+      <div class="modal-item-header">
+        <div class="item-title" id="modalItemName">—</div>
+        <span class="modal-discount-badge"><?= htmlspecialchars($t['ten_pct_off'] ?? '10% off') ?></span>
+      </div>
       <div class="detail-row">
-        <span><?= htmlspecialchars($t['case_cost']) ?></span>
-        <div>
-          <span class="modal-cost-original" id="modalCostOriginal">—</span>
-          <strong id="modalCost">—</strong>
-          <span class="modal-discount-badge"><?= htmlspecialchars($t['ten_pct_off'] ?? '10% off') ?></span>
-        </div>
+        <span><?= htmlspecialchars($t['discounted_case_cost'] ?? 'Discounted Case Cost') ?></span>
+        <strong id="modalCost">—</strong>
       </div>
       <div class="detail-row">
         <span><?= htmlspecialchars($t['pack_amount']) ?></span>
@@ -357,7 +356,6 @@ let pendingData = {};
 function openConfirm(id, name, category, cost, pack) {
   pendingData = { id, name, category, cost, pack };
   document.getElementById('modalItemName').textContent     = name;
-  document.getElementById('modalCostOriginal').textContent = '$' + Math.floor(parseFloat(cost) / 0.9);
   document.getElementById('modalCost').textContent         = '$' + parseFloat(cost).toFixed(2);
   document.getElementById('modalPack').textContent         = PACK_OF + ' ' + pack;
   document.getElementById('modalCat').textContent      = category;

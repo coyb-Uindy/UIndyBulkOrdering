@@ -90,12 +90,12 @@ function fmt_indy_time(string $dt): string {
       </div>
     </div>
     <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
-      <a class="btn-logout" href="inventory.php">🗂️ Manage Inventory</a>
-      <button class="btn-logout" onclick="location.reload()">🔄 Refresh Now</button>
+      <a class="btn-logout" href="inventory.php">Manage Inventory</a>
+      <button class="btn-logout" onclick="location.reload()">Refresh Now</button>
       <?php if ($ordering_paused): ?>
-        <button class="btn-ordering-paused" onclick="toggleOrdering(0)">▶️ Resume Ordering</button>
+        <button class="btn-ordering-paused" onclick="toggleOrdering(0)">Resume Ordering</button>
       <?php else: ?>
-        <button class="btn-ordering-pause" onclick="toggleOrdering(1)">⏸️ Pause Ordering</button>
+        <button class="btn-ordering-pause" onclick="toggleOrdering(1)">Pause Ordering</button>
       <?php endif; ?>
       <a class="btn-logout" href="/logout">Sign Out</a>
     </div>
@@ -103,14 +103,13 @@ function fmt_indy_time(string $dt): string {
 
   <?php if ($ordering_paused): ?>
   <div class="ordering-paused-banner" role="alert">
-    <strong>⏸️ Ordering is currently paused.</strong>
-    <span>Students cannot place new orders. Items marked Out of Stock are unaffected.</span>
+    Ordering is currently paused
   </div>
   <?php endif; ?>
 
   <!-- Quick stats -->
   <div class="dash-stats">
-    <div class="stat-pill">📋 <?= count($orders) ?> pending order<?= count($orders) !== 1 ? 's' : '' ?></div>
+    <div class="stat-pill"><?= count($orders) ?> pending order<?= count($orders) !== 1 ? 's' : '' ?></div>
   </div>
 
   <!-- Ticket grid -->
