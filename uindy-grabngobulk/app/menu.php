@@ -71,7 +71,16 @@ $cat_emojis = [
     'Alani'           => '🌸',
 ];
 
-$ordering_open = is_ordering_open();
+$ordering_open   = is_ordering_open();
+$ordering_paused = is_ordering_paused($pdo);
+$can_order       = $ordering_open && !$ordering_paused;
+
+// Calculate original (pre-discount) price from discounted price.
+// Staff confirmed current prices are already 10% discounted.
+// original = discounted / 0.9
+function original_price(float $discounted): float {
+    return $discounted / 0.9;
+}
 
 // Translate an item name: check full-phrase lookup first (correct grammar),
 // then fall back to word-by-word substitution for any DB items not in the table.
@@ -166,6 +175,11 @@ function translate_item(string $name, array $item_names, array $word_map): strin
     <strong><?= htmlspecialchars($t['ordering_closed']) ?></strong>
     <span><?= htmlspecialchars($t['ordering_closed_hours']) ?></span>
   </div>
+  <?php elseif ($ordering_paused): ?>
+  <div class="closed-banner closed-banner--paused" role="alert">
+    <strong><?= htmlspecialchars($t['ordering_paused'] ?? '⏸️ Ordering is temporarily paused.') ?></strong>
+    <span><?= htmlspecialchars($t['ordering_paused_desc'] ?? 'Staff have temporarily paused new orders. Please check back soon.') ?></span>
+  </div>
   <?php endif; ?>
 
   <!-- Category list -->
@@ -227,14 +241,17 @@ function translate_item(string $name, array $item_names, array $word_map): strin
               <?php endif; ?>
             </div>
 
-            <div class="item-cost">$<?= number_format($item['case_cost'], 2) ?></div>
+            <div class="item-cost">
+              <span class="item-cost__original">$<?= number_format(original_price($item['case_cost']), 2) ?></span>
+              <span class="item-cost__discounted">$<?= number_format($item['case_cost'], 2) ?></span>
+            </div>
 
             <?php if ($unavailable): ?>
               <button class="btn-interest btn-interest--oos" disabled
                       aria-label="<?= htmlspecialchars($item['name']) ?> — <?= htmlspecialchars($t['out_of_stock']) ?>">
                 <?= htmlspecialchars($t['out_of_stock']) ?>
               </button>
-            <?php elseif (!$ordering_open): ?>
+            <?php elseif (!$can_order): ?>
               <button class="btn-interest btn-interest--oos" disabled
                       aria-label="<?= htmlspecialchars($t['ordering_closed_btn']) ?>">
                 <?= htmlspecialchars($t['ordering_closed_btn']) ?>
@@ -274,7 +291,11 @@ function translate_item(string $name, array $item_names, array $word_map): strin
       <div class="item-title" id="modalItemName">—</div>
       <div class="detail-row">
         <span><?= htmlspecialchars($t['case_cost']) ?></span>
-        <strong id="modalCost">—</strong>
+        <div>
+          <span class="modal-cost-original" id="modalCostOriginal">—</span>
+          <strong id="modalCost">—</strong>
+          <span class="modal-discount-badge">10% Dining Discount</span>
+        </div>
       </div>
       <div class="detail-row">
         <span><?= htmlspecialchars($t['pack_amount']) ?></span>
@@ -284,10 +305,7 @@ function translate_item(string $name, array $item_names, array $word_map): strin
         <span><?= htmlspecialchars($t['category_label']) ?></span>
         <strong id="modalCat">—</strong>
       </div>
-      <div class="discount-placeholder">
-        <?= htmlspecialchars($t['discount_coming']) ?>
-      </div>
-    </div>
+          </div>
 
     <form id="orderForm">
       <input type="hidden" name="item_id"   id="hiddenItemId">
@@ -338,9 +356,10 @@ let pendingData = {};
 
 function openConfirm(id, name, category, cost, pack) {
   pendingData = { id, name, category, cost, pack };
-  document.getElementById('modalItemName').textContent = name;
-  document.getElementById('modalCost').textContent     = '$' + parseFloat(cost).toFixed(2);
-  document.getElementById('modalPack').textContent     = PACK_OF + ' ' + pack;
+  document.getElementById('modalItemName').textContent     = name;
+  document.getElementById('modalCostOriginal').textContent = '$' + (parseFloat(cost) / 0.9).toFixed(2);
+  document.getElementById('modalCost').textContent         = '$' + parseFloat(cost).toFixed(2);
+  document.getElementById('modalPack').textContent         = PACK_OF + ' ' + pack;
   document.getElementById('modalCat').textContent      = category;
   document.getElementById('hiddenItemId').value   = id;
   document.getElementById('hiddenItemName').value = name;

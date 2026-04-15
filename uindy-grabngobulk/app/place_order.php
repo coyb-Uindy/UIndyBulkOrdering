@@ -17,6 +17,12 @@ if (!is_ordering_open()) {
     exit;
 }
 
+// Admin pause check
+if (is_ordering_paused($pdo)) {
+    echo json_encode(['success' => false, 'error' => 'Ordering has been temporarily paused by staff.']);
+    exit;
+}
+
 // Only trust item_id from POST — everything else comes from the DB.
 // This prevents any injection of custom item names, prices, or quantities.
 $item_id = filter_input(INPUT_POST, 'item_id', FILTER_VALIDATE_INT);

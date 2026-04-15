@@ -54,7 +54,7 @@ Run this SQL directly in MySQL:
 ```sql
 USE GrabNGo;
 INSERT INTO admins (username, password)
-VALUES ('GRABNGO', SHA2('Q8ZK4M7X', 256));
+VALUES ('Msession92', SHA2('Uindy@2026', 256));
 ```
 
 To log in, go to: `https://yourdomain.com/grabngobulk/admin/login.php`

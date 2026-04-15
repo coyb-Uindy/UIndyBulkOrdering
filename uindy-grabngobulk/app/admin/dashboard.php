@@ -20,6 +20,8 @@ $sql = "SELECT o.id, o.user_name, o.user_email, o.item_name, o.category,
         ORDER BY o.ordered_at ASC";
 $orders = $pdo->query($sql)->fetchAll();
 
+$ordering_paused = is_ordering_paused($pdo);
+
 function time_ago(string $dt): string {
     // $dt is UTC from MySQL; compare against current UTC time
     $d    = new DateTime($dt, new DateTimeZone('UTC'));
@@ -90,9 +92,21 @@ function fmt_indy_time(string $dt): string {
     <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
       <a class="btn-logout" href="inventory.php">🗂️ Manage Inventory</a>
       <button class="btn-logout" onclick="location.reload()">🔄 Refresh Now</button>
-      <a class="btn-logout" href="logout.php">Sign Out</a>
+      <?php if ($ordering_paused): ?>
+        <button class="btn-ordering-paused" onclick="toggleOrdering(0)">▶️ Resume Ordering</button>
+      <?php else: ?>
+        <button class="btn-ordering-pause" onclick="toggleOrdering(1)">⏸️ Pause Ordering</button>
+      <?php endif; ?>
+      <a class="btn-logout" href="/logout">Sign Out</a>
     </div>
   </div>
+
+  <?php if ($ordering_paused): ?>
+  <div class="ordering-paused-banner" role="alert">
+    <strong>⏸️ Ordering is currently paused.</strong>
+    <span>Students cannot place new orders. Items marked Out of Stock are unaffected.</span>
+  </div>
+  <?php endif; ?>
 
   <!-- Quick stats -->
   <div class="dash-stats">
@@ -249,6 +263,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAction(
 
 // Auto-refresh every 30 seconds
 setTimeout(() => location.reload(), 30000);
+
+async function toggleOrdering(pause) {
+  const body = new FormData();
+  body.append('paused', pause);
+  const res  = await fetch('toggle_ordering.php', { method: 'POST', body });
+  const data = await res.json();
+  if (data.success) {
+    location.reload();
+  } else {
+    alert('Error: ' + (data.error || 'Could not update ordering status.'));
+  }
+}
 </script>
 
 </body>

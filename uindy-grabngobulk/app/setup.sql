@@ -216,6 +216,12 @@ ALTER TABLE menu_items
   ADD COLUMN is_available TINYINT(1) NOT NULL DEFAULT 1
   COMMENT '1 = available to order, 0 = out of stock / hidden from ordering';
 
+CREATE TABLE IF NOT EXISTS settings (
+    `key`   VARCHAR(100) NOT NULL PRIMARY KEY,
+    `value` VARCHAR(255) NOT NULL DEFAULT ''
+);
+
+INSERT IGNORE INTO settings (`key`, `value`) VALUES ('ordering_paused', '0');
 
 -- ============================================================
 -- Example: create the first admin account
