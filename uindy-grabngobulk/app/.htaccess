@@ -4,10 +4,14 @@ RewriteEngine On
 # Pass SimpleSAMLphp requests through untouched
 RewriteRule ^simplesaml/ - [L]
 
-# Block direct access to AJAX-only endpoints
-RewriteRule ^place_order\.php$   /  [R=302,L]
-RewriteRule ^order_status\.php$  /  [R=302,L]
-RewriteRule ^clear_orders\.php$  /  [R=302,L]
+# Pass admin section through untouched
+RewriteRule ^admin/ - [L]
+
+# Pass internal/AJAX endpoints through untouched
+RewriteRule ^place_order\.php$  - [L]
+RewriteRule ^order_status\.php$ - [L]
+RewriteRule ^set_lang\.php$     - [L]
+RewriteRule ^auth/             - [L]
 
 # Clean URL rewrites (internal only)
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -34,11 +38,4 @@ RewriteCond %{THE_REQUEST} "\.php"
 RewriteRule ^my_order\.php$   /my-orders [R=301,L]
 
 RewriteCond %{THE_REQUEST} "\.php"
-RewriteRule ^auth/login\.php$ /login     [R=301,L]
-
-RewriteCond %{THE_REQUEST} "\.php"
 RewriteRule ^logout\.php$     /logout    [R=301,L]
-
-# Block any other direct .php access
-RewriteCond %{THE_REQUEST} "\.php"
-RewriteRule ^(?!index\.php).+\.php$ /   [R=302,L]
