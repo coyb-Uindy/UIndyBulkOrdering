@@ -223,6 +223,130 @@ CREATE TABLE IF NOT EXISTS settings (
 
 INSERT IGNORE INTO settings (`key`, `value`) VALUES ('ordering_paused', '0');
 
+-- ── Category Icons ──────────────────────────────────────────
+UPDATE categories SET icon_path = '/assets/img/categories/sodas-water.png'    WHERE name = 'Sodas & Water';
+UPDATE categories SET icon_path = '/assets/img/categories/tropicana-juice.png' WHERE name = 'Tropicana Juice';
+UPDATE categories SET icon_path = '/assets/img/categories/pure-leaf-tea.png'   WHERE name = 'Pure Leaf Tea';
+UPDATE categories SET icon_path = '/assets/img/categories/propel.png'          WHERE name = 'Propel';
+UPDATE categories SET icon_path = '/assets/img/categories/muscle-milk.png'     WHERE name = 'Muscle Milk';
+UPDATE categories SET icon_path = '/assets/img/categories/rockstar.png'        WHERE name = 'Rockstar';
+UPDATE categories SET icon_path = '/assets/img/categories/starbucks.png'       WHERE name = 'Starbucks';
+UPDATE categories SET icon_path = '/assets/img/categories/celsius-16oz.png'    WHERE name = '16oz Celsius';
+UPDATE categories SET icon_path = '/assets/img/categories/celsius-12oz.png'    WHERE name = '12oz Celsius';
+UPDATE categories SET icon_path = '/assets/img/categories/gatorade.png'        WHERE name = 'Gatorade';
+UPDATE categories SET icon_path = '/assets/img/categories/alani.png'           WHERE name = 'Alani';
+ 
+-- ── Sodas & Water (category_id = 1) ─────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/aquafina.png'             WHERE name = 'Aquafina';
+UPDATE menu_items SET image_path = '/assets/img/items/lifewater.png'            WHERE name = 'Lifewater';
+UPDATE menu_items SET image_path = '/assets/img/items/pepsi.png'                WHERE name = 'Pepsi'              AND category_id = 1;
+UPDATE menu_items SET image_path = '/assets/img/items/diet-pepsi.png'           WHERE name = 'Diet Pepsi';
+UPDATE menu_items SET image_path = '/assets/img/items/pepsi-zero.png'           WHERE name = 'Pepsi Zero';
+UPDATE menu_items SET image_path = '/assets/img/items/pepsi-cherry.png'         WHERE name = 'Pepsi Cherry';
+UPDATE menu_items SET image_path = '/assets/img/items/dr-pepper.png'            WHERE name = 'Dr. Pepper';
+UPDATE menu_items SET image_path = '/assets/img/items/diet-dr-pepper.png'       WHERE name = 'Diet Dr. Pepper';
+UPDATE menu_items SET image_path = '/assets/img/items/mtn-dew.png'              WHERE name = 'Mtn Dew';
+UPDATE menu_items SET image_path = '/assets/img/items/diet-mtn-dew.png'         WHERE name = 'Diet Mtn Dew';
+UPDATE menu_items SET image_path = '/assets/img/items/mtn-dew-baja-blast.png'   WHERE name = 'Mtn Dew Baja Blast';
+UPDATE menu_items SET image_path = '/assets/img/items/starry.png'               WHERE name = 'Starry';
+UPDATE menu_items SET image_path = '/assets/img/items/crush-orange.png'         WHERE name = 'Crush Orange';
+UPDATE menu_items SET image_path = '/assets/img/items/crush-grape.png'          WHERE name = 'Crush Grape';
+UPDATE menu_items SET image_path = '/assets/img/items/schweppes-ginger-ale.png' WHERE name = 'Schweppes Ginger Ale';
+UPDATE menu_items SET image_path = '/assets/img/items/root-beer.png'            WHERE name = 'Root Beer';
+ 
+-- ── Tropicana Juice (category_id = 2) ───────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/tropicana-apple-juice.png'        WHERE name = 'Apple Juice';
+UPDATE menu_items SET image_path = '/assets/img/items/tropicana-peach.png'              WHERE name = 'Peach'             AND category_id = 2;
+UPDATE menu_items SET image_path = '/assets/img/items/tropicana-orange-juice.png'       WHERE name = 'Orange Juice';
+UPDATE menu_items SET image_path = '/assets/img/items/tropicana-cranberry.png'          WHERE name = 'Cranberry';
+UPDATE menu_items SET image_path = '/assets/img/items/tropicana-raspberry-lemonade.png' WHERE name = 'Raspberry Lemonade' AND category_id = 2;
+UPDATE menu_items SET image_path = '/assets/img/items/tropicana-strawberry-lemonade.png' WHERE name = 'Strawberry Lemonade' AND category_id = 2;
+ 
+-- ── Pure Leaf Tea (category_id = 3) ─────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/pureleaf-extra-sweet-tea.png'     WHERE name = 'Extra Sweet Tea';
+UPDATE menu_items SET image_path = '/assets/img/items/pureleaf-sweet-tea.png'           WHERE name = 'Sweet Tea';
+UPDATE menu_items SET image_path = '/assets/img/items/pureleaf-unsweetened-tea.png'     WHERE name = 'Unsweetened Tea';
+UPDATE menu_items SET image_path = '/assets/img/items/pureleaf-raspberry-tea.png'       WHERE name = 'Raspberry Tea';
+UPDATE menu_items SET image_path = '/assets/img/items/pureleaf-zero-sugar-sweet-tea.png' WHERE name = 'Zero Sugar Sweet Tea';
+UPDATE menu_items SET image_path = '/assets/img/items/pureleaf-black-cherry-tea.png'    WHERE name = 'Black Cherry Tea';
+UPDATE menu_items SET image_path = '/assets/img/items/pureleaf-lemon-tea.png'           WHERE name = 'Lemon Tea';
+ 
+-- ── Propel (category_id = 4) ────────────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/propel-black-cherry.png'          WHERE name = 'Black Cherry'       AND category_id = 4;
+UPDATE menu_items SET image_path = '/assets/img/items/propel-grape.png'                 WHERE name = 'Grape'              AND category_id = 4;
+UPDATE menu_items SET image_path = '/assets/img/items/propel-berry.png'                 WHERE name = 'Berry';
+UPDATE menu_items SET image_path = '/assets/img/items/propel-strawberry-lemonade.png'   WHERE name = 'Strawberry Lemonade' AND category_id = 4;
+UPDATE menu_items SET image_path = '/assets/img/items/propel-watermelon.png'            WHERE name = 'Watermelon'         AND category_id = 4;
+UPDATE menu_items SET image_path = '/assets/img/items/propel-peach.png'                 WHERE name = 'Peach'              AND category_id = 4;
+ 
+-- ── Muscle Milk (category_id = 5) ───────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/musclemilk-vanilla.png'           WHERE name = 'Vanilla'            AND category_id = 5;
+UPDATE menu_items SET image_path = '/assets/img/items/musclemilk-chocolate.png'         WHERE name = 'Chocolate'          AND category_id = 5;
+UPDATE menu_items SET image_path = '/assets/img/items/musclemilk-chocolate-peanut-butter.png' WHERE name = 'Chocolate Peanut Butter';
+UPDATE menu_items SET image_path = '/assets/img/items/musclemilk-strawberry.png'        WHERE name = 'Strawberry'         AND category_id = 5;
+ 
+-- ── Rockstar (category_id = 6) ──────────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/rockstar-sugar-free.png'          WHERE name = 'Sugar Free';
+UPDATE menu_items SET image_path = '/assets/img/items/rockstar-whipped-strawberry.png'  WHERE name = 'Whipped Strawberry';
+UPDATE menu_items SET image_path = '/assets/img/items/rockstar-orange.png'              WHERE name = 'Orange'             AND category_id = 6;
+UPDATE menu_items SET image_path = '/assets/img/items/rockstar-recovery-lemonade.png'   WHERE name = 'Recovery Lemonade';
+UPDATE menu_items SET image_path = '/assets/img/items/rockstar-recovery-strawberry-lemon.png' WHERE name = 'Recovery Strawberry Lemon';
+UPDATE menu_items SET image_path = '/assets/img/items/rockstar-recovery-berryade.png'   WHERE name = 'Recovery Berryade';
+UPDATE menu_items SET image_path = '/assets/img/items/rockstar-fruit-punch.png'         WHERE name = 'Fruit Punch'        AND category_id = 6;
+ 
+-- ── Starbucks (category_id = 7) ─────────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/starbucks-mocha.png'              WHERE name = 'Mocha';
+UPDATE menu_items SET image_path = '/assets/img/items/starbucks-vanilla.png'            WHERE name = 'Vanilla'            AND category_id = 7;
+UPDATE menu_items SET image_path = '/assets/img/items/starbucks-caramel.png'            WHERE name = 'Caramel';
+UPDATE menu_items SET image_path = '/assets/img/items/starbucks-tripleshot-caramel.png' WHERE name = 'Tripleshot Caramel';
+UPDATE menu_items SET image_path = '/assets/img/items/starbucks-tripleshot-vanilla.png' WHERE name = 'Tripleshot Vanilla';
+UPDATE menu_items SET image_path = '/assets/img/items/starbucks-tripleshot-mocha.png'   WHERE name = 'Tripleshot Mocha';
+UPDATE menu_items SET image_path = '/assets/img/items/starbucks-pink-drink.png'         WHERE name = 'Pink Drink';
+ 
+-- ── 16oz Celsius (category_id = 8) ──────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/celsius16-blueberry-lemonade.png' WHERE name = 'Energy Blueberry Lemonade';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius16-tropical-peach.png'     WHERE name = 'Energy Tropical Peach';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius16-watermelon-twist.png'   WHERE name = 'Energy Watermelon Twist';
+ 
+-- ── 12oz Celsius (category_id = 9) ──────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-mango-lemonade.png'     WHERE name = 'Mango Lemonade';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-grape.png'              WHERE name = 'Grape'              AND category_id = 9;
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-cherry-cola.png'        WHERE name = 'Cherry Cola';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-peach-vibe.png'         WHERE name = 'Peach Vibe';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-arctic-vibe.png'        WHERE name = 'Arctic Vibe';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-galaxy-vibe.png'        WHERE name = 'Galaxy Vibe';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-cosmic.png'             WHERE name = 'Cosmic'             AND category_id = 9;
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-blu-razz-lemonade.png'  WHERE name = 'Blu Razz Lemonade';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-watermelon.png'         WHERE name = 'Watermelon'         AND category_id = 9;
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-green-apple-cherry.png' WHERE name = 'Green Apple Cherry';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-blue-crush.png'         WHERE name = 'Blue Crush';
+UPDATE menu_items SET image_path = '/assets/img/items/celsius12-dragonberry.png'        WHERE name = 'Dragonberry';
+ 
+-- ── Gatorade (category_id = 10) ─────────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-orange.png'              WHERE name = 'Orange'             AND category_id = 10;
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-lemon-lime.png'          WHERE name = 'Lemon Lime';
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-fruit-punch.png'         WHERE name = 'Fruit Punch'        AND category_id = 10;
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-glacier-freeze.png'      WHERE name = 'Glacier Freeze';
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-cool-blue.png'           WHERE name = 'Cool Blue';
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-rip-tide.png'            WHERE name = 'Rip Tide';
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-grape.png'               WHERE name = 'Grape'              AND category_id = 10;
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-green-apple.png'         WHERE name = 'Green Apple';
+UPDATE menu_items SET image_path = '/assets/img/items/gatorade-watermelon.png'          WHERE name = 'Watermelon'         AND category_id = 10;
+ 
+-- ── Alani (category_id = 11) ────────────────────────────────
+UPDATE menu_items SET image_path = '/assets/img/items/alani-cherry-limeade.png'         WHERE name = 'Cherry Limeade';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-classic-cola.png'           WHERE name = 'Classic Cola';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-strawberry-lemon.png'       WHERE name = 'Strawberry Lemon';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-wild-berry.png'             WHERE name = 'Wild Berry';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-orange-kiss.png'            WHERE name = 'Orange Kiss';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-sherbet.png'                WHERE name = 'Sherbet';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-hawaiian-shaved-ice.png'    WHERE name = 'Hawaiian Shaved Ice';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-juicy-peach.png'            WHERE name = 'Juicy Peach';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-cotton-candy.png'           WHERE name = 'Cotton Candy';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-breezeberry.png'            WHERE name = 'Breezeberry';
+UPDATE menu_items SET image_path = '/assets/img/items/alani-cosmic.png'                 WHERE name = 'Cosmic'             AND category_id = 11;
+
+
 -- ============================================================
 -- Example: create the first admin account
 -- Replace 'adminuser' and 'yourpassword' with real values
