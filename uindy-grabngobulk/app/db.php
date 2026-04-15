@@ -22,13 +22,10 @@ try {
  *   Mon–Fri : 8:00 AM – 12:00 AM (midnight)
  *   Sat–Sun : 2:00 PM – 12:00 AM (midnight)
  *
- * TESTING MODE: hours check temporarily disabled — returns true always.
- * Re-enable by uncommenting the time logic and removing the early return.
  */
 function is_ordering_open(): bool {
     // ── TESTING: remove this line to re-enable time lock ──
-    return true;
-
+    
     $now  = new DateTime('now', new DateTimeZone('America/Indiana/Indianapolis'));
     $dow  = (int) $now->format('N');
     $hour = (int) $now->format('G');
