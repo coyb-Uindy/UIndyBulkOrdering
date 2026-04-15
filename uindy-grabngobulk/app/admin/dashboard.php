@@ -91,6 +91,7 @@ function fmt_indy_time(string $dt): string {
     </div>
     <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
       <a class="btn-logout" href="inventory.php">Manage Inventory</a>
+      <a class="btn-logout" href="orders.php">Order History</a>
       <button class="btn-logout" onclick="location.reload()">Refresh Now</button>
       <?php if ($ordering_paused): ?>
         <button class="btn-ordering-paused" onclick="toggleOrdering(0)">Resume Ordering</button>

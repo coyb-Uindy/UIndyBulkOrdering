@@ -104,6 +104,7 @@ $oos_count   = count(array_filter($rows, fn($r) => !$r['is_available']));
     </div>
     <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
       <a class="btn-logout" href="dashboard.php">Order Monitor</a>
+      <a class="btn-logout" href="orders.php">Order History</a>
       <a class="btn-logout" href="/logout">Sign Out</a>
     </div>
   </div>
