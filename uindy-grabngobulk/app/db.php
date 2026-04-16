@@ -26,13 +26,12 @@ try {
  * Re-enable by uncommenting the time logic and removing the early return.
  */
 function is_ordering_open(): bool {
-    // ── TESTING: remove this line to re-enable time lock ──
-    
-
+    // TESTING: hours set to always open (0–23 always passes)
+    // To re-enable real hours, restore the original time logic below
     $now  = new DateTime('now', new DateTimeZone('America/Indiana/Indianapolis'));
     $dow  = (int) $now->format('N');
     $hour = (int) $now->format('G');
-    return ($dow <= 5) ? ($hour >= 8) : ($hour >= 14);
+    return ($dow <= 5) ? ($hour >= 0) : ($hour >= 0);
 }
 
 /**
