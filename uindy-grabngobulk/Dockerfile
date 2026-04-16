@@ -1,39 +1,30 @@
-FROM ubuntu:22.04
+FROM php:8.2-apache
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Enable required Apache modules
+RUN a2enmod rewrite headers
 
+# Install PHP extensions needed by the app and SimpleSAMLphp
 RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    curl \
+    libicu-dev \
+    libzip-dev \
+    zip \
     unzip \
-    && add-apt-repository ppa:ondrej/php \
-    && add-apt-repository ppa:ondrej/apache2 \
-    && apt-get update && apt-get install -y \
-    apache2 \
-    php8.2 \
-    php8.2-mysql \
-    php8.2-xml \
-    php8.2-curl \
-    php8.2-mbstring \
-    php8.2-zip \
-    php8.2-intl \
-    php8.2-sqlite3 \
-    libapache2-mod-php8.2 \
-    && a2enmod php8.2 rewrite headers \
+    && docker-php-ext-install \
+        pdo_mysql \
+        intl \
+        zip \
     && apt-get clean \
-    && rm -rf /var/www/html/* \
-    && rm -f /etc/apache2/sites-enabled/000-default.conf
+    && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sS https://getcomposer.org/installer | php8.2 -- --install-dir=/usr/local/bin --filename=composer
-
-RUN composer create-project simplesamlphp/simplesamlphp:^2.3 \
-    /var/simplesamlphp --no-interaction --prefer-dist
+# Copy pre-bundled SimpleSAMLphp (avoids slow Composer download at build time)
+COPY simplesamlphp/ /var/simplesamlphp/
 
 RUN mkdir -p /var/simplesamlphp/log \
     && mkdir -p /var/simplesamlphp/data \
     && mkdir -p /var/simplesamlphp/cert \
     && mkdir -p /tmp/simplesaml
 
+# Copy app files
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
 COPY simplesaml-config/saml20-idp-remote.php /var/simplesamlphp/metadata/saml20-idp-remote.php
@@ -43,8 +34,11 @@ RUN chown -R www-data:www-data /var/www/html \
     && chown -R www-data:www-data /var/simplesamlphp \
     && chown -R www-data:www-data /tmp/simplesaml
 
+# Apache config
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
+RUN a2dissite 000-default 2>/dev/null || true \
+    && a2ensite 000-default
 
 EXPOSE 80
 
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+CMD ["apache2-foreground"]
