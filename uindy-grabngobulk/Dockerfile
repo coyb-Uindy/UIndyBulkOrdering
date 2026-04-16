@@ -1,7 +1,11 @@
 FROM php:8.2-apache
 
-# Enable required Apache modules and fix MPM conflict
-RUN a2dismod mpm_event 2>/dev/null || true \
+# Fix MPM conflict — php:8.2-apache has both event and prefork present.
+# Remove event and worker conf files so only prefork loads.
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf \
+           /etc/apache2/mods-enabled/mpm_event.load \
+           /etc/apache2/mods-enabled/mpm_worker.conf \
+           /etc/apache2/mods-enabled/mpm_worker.load \
     && a2enmod mpm_prefork rewrite headers
 
 # Install PHP extensions needed by the app and SimpleSAMLphp
