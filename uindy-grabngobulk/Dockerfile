@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php8.2 -- --install-dir=/usr/local/bin --filename=composer
 
 RUN composer create-project simplesamlphp/simplesamlphp:^2.3 \
-    /var/simplesamlphp --no-interaction --prefer-dist
+    /var/simplesamlphp --no-interaction --prefer-dist --no-dev
 
 RUN mkdir -p /var/simplesamlphp/log \
     && mkdir -p /var/simplesamlphp/data \
