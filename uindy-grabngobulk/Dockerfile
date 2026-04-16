@@ -1,27 +1,24 @@
-FROM php:8.2-apache
+FROM ubuntu:22.04
 
-# Fix MPM conflict — php:8.2-apache has both event and prefork present.
-# Remove event and worker conf files so only prefork loads.
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf \
-           /etc/apache2/mods-enabled/mpm_event.load \
-           /etc/apache2/mods-enabled/mpm_worker.conf \
-           /etc/apache2/mods-enabled/mpm_worker.load \
-    && a2enmod mpm_prefork rewrite headers
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install PHP extensions needed by the app and SimpleSAMLphp
 RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    && docker-php-ext-install \
-        pdo_mysql \
-        intl \
-        zip \
+    apache2 \
+    php8.2 \
+    php8.2-mysql \
+    php8.2-xml \
+    php8.2-curl \
+    php8.2-mbstring \
+    php8.2-zip \
+    php8.2-intl \
+    php8.2-sqlite3 \
+    libapache2-mod-php8.2 \
+    && a2enmod php8.2 rewrite headers \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/www/html/* \
+    && rm -f /etc/apache2/sites-enabled/000-default.conf
 
-# Copy pre-bundled SimpleSAMLphp (avoids slow Composer download at build time)
 COPY simplesamlphp/ /var/simplesamlphp/
 
 RUN mkdir -p /var/simplesamlphp/log \
@@ -29,7 +26,6 @@ RUN mkdir -p /var/simplesamlphp/log \
     && mkdir -p /var/simplesamlphp/cert \
     && mkdir -p /tmp/simplesaml
 
-# Copy app files
 COPY app/ /var/www/html/
 COPY simplesaml-config/ /var/simplesamlphp/config/
 COPY simplesaml-config/saml20-idp-remote.php /var/simplesamlphp/metadata/saml20-idp-remote.php
@@ -39,11 +35,8 @@ RUN chown -R www-data:www-data /var/www/html \
     && chown -R www-data:www-data /var/simplesamlphp \
     && chown -R www-data:www-data /tmp/simplesaml
 
-# Apache config
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
-RUN a2dissite 000-default 2>/dev/null || true \
-    && a2ensite 000-default
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["apache2ctl", "-D", "FOREGROUND"]
