@@ -25,6 +25,7 @@ try {
  */
 function is_ordering_open(): bool {
     // ── TESTING: remove this line to re-enable time lock ──
+    return true;
     
     $now  = new DateTime('now', new DateTimeZone('America/Indiana/Indianapolis'));
     $dow  = (int) $now->format('N');
